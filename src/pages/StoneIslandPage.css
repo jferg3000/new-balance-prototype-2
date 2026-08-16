@@ -1,0 +1,545 @@
+/* Stone Island Collection — Figma 91:3758 (static)
+   Section heights / gaps measured independently from parent-frame y positions.
+   Ref width 402; page is full-bleed with Figma side insets preserved. */
+
+.si {
+  --si-green: #1d4232;
+  --si-ref: 402;
+
+  width: 100%;
+  min-height: 100%;
+  background: #000;
+  color: var(--color-white);
+}
+
+.si img {
+  max-width: none;
+}
+
+.si__main {
+  padding-top: calc(var(--promo-bar-height) + var(--nav-height));
+  width: 100%;
+  background: #000;
+  overflow: visible;
+}
+
+/* Shared chrome marks */
+.si-pause {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 44px;
+  height: 44px;
+  background: rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(37.5px);
+  -webkit-backdrop-filter: blur(37.5px);
+}
+
+.si-pause__bar {
+  display: block;
+  width: 1px;
+  height: 10px;
+  background: var(--color-white);
+}
+
+.si-plus {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background: rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(37.5px);
+  -webkit-backdrop-filter: blur(37.5px);
+}
+
+.si-plus__mark {
+  position: relative;
+  width: 13px;
+  height: 13px;
+}
+
+.si-plus__mark::before,
+.si-plus__mark::after {
+  content: "";
+  position: absolute;
+  background: var(--color-white);
+}
+
+.si-plus__mark::before {
+  left: 6px;
+  top: 0;
+  width: 1px;
+  height: 13px;
+}
+
+.si-plus__mark::after {
+  left: 0;
+  top: 6px;
+  width: 13px;
+  height: 1px;
+}
+
+.si-close {
+  position: absolute;
+  top: 24px;
+  right: 28px;
+  z-index: 3;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.si-close__x {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  transform: translate(-50%, -50%);
+}
+
+.si-close__x::before,
+.si-close__x::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 1px;
+  background: var(--color-white);
+}
+
+.si-close__x::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.si-close__x::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* —— 1. Hero 91:3778 (h=650) —— */
+.si-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 650px;
+  padding: 8px 8px 0;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.si-hero__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 386 / 480;
+  overflow: hidden;
+  background: #111;
+}
+
+.si-hero__img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.si-hero__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: min(252px, calc(100% - 48px));
+  margin: 28px 0 40px;
+  padding: 0 24px 0 24px; /* 32px page inset − 8px section pad */
+  box-sizing: border-box;
+}
+
+.si-hero__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: var(--font-display-weight);
+  font-synthesis: none;
+  line-height: 1.2;
+  letter-spacing: 0.28px;
+  color: var(--color-white);
+}
+
+.si-hero__body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.26px;
+  color: var(--color-white);
+}
+
+/* —— 2. Carousel 91:3793 (h=874) —— */
+.si-carousel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 874px;
+  padding: 90px 0 69px;
+  box-sizing: border-box;
+  background: var(--si-green);
+}
+
+/* Inner reveal — inherits section flex column so layout stays identical */
+.si-carousel__reveal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1;
+}
+
+.si-carousel__eyebrow {
+  margin: 0 0 24px;
+  padding: 0 32px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 32px;
+  letter-spacing: 0.15px;
+  color: var(--color-white);
+}
+
+.si-carousel__track {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.si-carousel__card {
+  position: relative;
+  flex: 0 0 calc(100% - 16px);
+  aspect-ratio: 386 / 524;
+  overflow: hidden;
+  background: #e5e5e5;
+}
+
+/* Figma 91:3811 — next card peeks ~12px; asset is flattened visible strip */
+.si-carousel__card--peek {
+  flex: 0 0 12px;
+  aspect-ratio: 12 / 524;
+}
+
+.si-carousel__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left center;
+}
+
+.si-carousel__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: calc(100% - 64px);
+  max-width: 338px;
+  margin: 20px 0 0;
+  padding: 10px 32px 0;
+  box-sizing: border-box;
+  color: var(--color-white);
+}
+
+.si-carousel__title {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.15px;
+}
+
+.si-carousel__desc {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.13px;
+}
+
+.si-carousel__progress {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 1px;
+  margin: 34px 0 0;
+  padding: 0 32px;
+}
+
+.si-carousel__bar {
+  display: block;
+  height: 1px;
+  width: 45px;
+  background: var(--color-white);
+  opacity: 0.2;
+}
+
+.si-carousel__bar--active {
+  width: 25px;
+  opacity: 1;
+}
+
+/* —— 3. Editorial Grid 91:3814 (h=874) —— */
+.si-editorial {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 874px;
+  background: var(--si-green);
+}
+
+.si-editorial__reveal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1;
+  min-height: 874px;
+}
+
+.si-editorial__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 402 / 580;
+  overflow: hidden;
+  background: #111;
+}
+
+.si-editorial__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.si-editorial__media .si-plus {
+  right: 8px;
+  bottom: 9px; /* 580 − 537 − 34 ≈ 9 */
+}
+
+.si-editorial__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 48px; /* title y600 → body y668 */
+  flex: 1;
+  min-height: 294px;
+  padding: 20px 32px 0; /* white panel starts at 580; title at 600 */
+  box-sizing: border-box;
+  background: var(--color-white);
+  color: var(--si-green);
+}
+
+.si-editorial__title,
+.si-editorial__body {
+  margin: 0;
+  width: min(314px, 100%);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.244;
+  color: var(--si-green);
+}
+
+/* —— 4. Layering 91:3826 (h=874) —— */
+.si-layering {
+  position: relative;
+  width: 100%;
+  min-height: 874px;
+  overflow: hidden;
+  background: var(--si-green);
+}
+
+.si-layering__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+/* Fill the section so absolute product/meta keep the same containing block */
+.si-layering__reveal {
+  position: absolute;
+  inset: 0;
+}
+
+.si-layering__product {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(258px, 64.18vw);
+  aspect-ratio: 258 / 376;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  background: #d9d9d9;
+}
+
+.si-layering__product-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.si-layering__product .si-plus {
+  /* Figma plus at 296,591 relative to 258×376 product at 72,249 → right/bottom of product */
+  right: 0;
+  bottom: 0;
+}
+
+.si-layering__meta {
+  position: absolute;
+  left: 32px;
+  bottom: 48px; /* 874 − 813 − 13 */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(248px, calc(100% - 64px));
+  color: var(--color-white);
+}
+
+.si-layering__name,
+.si-layering__price {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.26px;
+  color: var(--color-white);
+}
+
+.si-layering__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* —— 5. Collection Grid 91:3834 (h=874) —— */
+.si-collage {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 874px;
+  padding: 112px 8px 37px;
+  box-sizing: border-box;
+  background: var(--si-green);
+}
+
+.si-collage__reveal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1;
+}
+
+.si-collage__title {
+  margin: 0 0 24px; /* title y112 → wide image y168 = 56; with 112 pad → 24 after title block */
+  padding: 0 24px; /* 32 − 8 */
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 32px;
+  letter-spacing: 0.15px;
+  color: var(--color-white);
+}
+
+.si-collage__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  width: 100%;
+}
+
+.si-collage__wide {
+  grid-column: 1 / -1;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 386 / 259;
+  overflow: hidden;
+  background: #f1f1f1;
+}
+
+.si-collage__half {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 191 / 259;
+  overflow: hidden;
+  background: #f1f1f1;
+}
+
+.si-collage__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.si-collage__caption {
+  margin: 24px 0 0; /* images end ~690; caption y714 → ~24 */
+  padding: 0 24px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.26px;
+  color: var(--color-white);
+}
+
+.si-collage__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 33px; /* Shop 32 → Global 177 ≈ 145−112 */
+  margin-top: 95px; /* caption y714 → CTAs y822 */
+  padding: 0 24px;
+}
+
+.si-collage__cta {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.3px;
+  color: var(--color-white);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: from-font;
+}
+
+a.si-collage__cta {
+  color: var(--color-white);
+}

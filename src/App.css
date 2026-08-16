@@ -1,0 +1,1041 @@
+.page {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  background: #000;
+  min-height: 100vh;
+  min-height: 100dvh;
+  /* no overflow here — overflow on ancestors kills sticky stack */
+}
+
+/*
+ * Homepage ready: `.page` is the only scrollport. Lock the document so iOS
+ * Safari never receives root scroll (that is what collapses URL bar / toolbar).
+ * Height uses svh (= chrome-exposed size) so the stack matches first paint.
+ */
+html:has(.page[data-state="ready"]),
+html:has(.page[data-state="ready"]) body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.page[data-state="ready"] {
+  /* Stay black under the stack — white here flashed during intro handoff */
+  background: #000;
+  min-height: 0;
+  height: 100vh;
+  height: 100svh;
+  max-height: 100vh;
+  max-height: 100svh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/*
+ * Desktop preview only — hide `.page` scrollbar UI (scroll still works).
+ * Scoped with hover/fine pointer (not min-width:769): the preview iframe
+ * viewport is ~430px, so a min-width query would never match inside it.
+ * Real phones stay on pointer:coarse and keep default scrollbar behavior.
+ */
+@media (hover: hover) and (pointer: fine) {
+  .page[data-state="ready"] {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .page[data-state="ready"]::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
+
+.page[data-state="intro"] {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #000;
+}
+
+.page[data-state="intro"] .page__main {
+  /* Stay painted under the overlay so the handoff never flashes black */
+  pointer-events: none;
+}
+
+/*
+  Later siblings (white Sezane / product / BTS) paint above the hero in DOM
+  order until GSAP stack init moves them to yPercent 100. Keep them hidden
+  until then so the intro → hero handoff never flashes white.
+*/
+.page[data-stack-ready="false"] .stack-stage > .stacked-section:not(.section--hero) {
+  visibility: hidden !important;
+  pointer-events: none;
+}
+
+/* —— One Peep Intro Stack → Final Hero —— */
+.intro-stack {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 40;
+  background: #000;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.intro-stack[data-visible="false"] {
+  display: none;
+}
+
+.intro-stack__stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.intro-stack__compose {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: center center;
+}
+
+.intro-card {
+  position: absolute;
+  margin: 0;
+  overflow: hidden;
+  background: #111;
+  transform-origin: center center;
+  will-change: transform, opacity;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.42);
+  backface-visibility: hidden;
+}
+
+.intro-card img {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.intro-card--hero .hero-photo {
+  position: absolute;
+  inset: 0;
+}
+
+.intro-card--hero .section__scrim {
+  z-index: 1;
+}
+
+/* Second card dim — scales with the card, no pointer capture */
+.intro-card__dim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Shared hero photo treatment — Intro Stack + Hero Final */
+.hero-photo {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.site-nav {
+  position: fixed;
+  top: var(--promo-bar-height);
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  pointer-events: none;
+  color: #fff;
+  transform: translateY(0);
+  transition:
+    color 0.2s cubic-bezier(0.33, 0, 0.67, 1),
+    transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+/*
+ * Homepage cube entrance — nav is a texture on the cube FRONT face.
+ * Cube starts at rotateX(-90deg) so that face reads as the TOP face, then
+ * the cube rotates forward to 0 (front-facing). Depth ≈ nav height.
+ */
+.site-nav--cube {
+  overflow: visible;
+  /* Outer shell keeps final layout; 3D lives inside — no layout tween */
+  transform: none;
+  /* Return from footer: soft settle back under promo */
+  transition:
+    color 0.2s cubic-bezier(0.33, 0, 0.67, 1),
+    transform 720ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: auto;
+}
+
+/*
+ * Homepage footer zone — slide main nav up behind the promo bar (z 120 > 100)
+ * and fully out of the viewport. Promo stays put.
+ * Dismiss uses a gentler ease-out so it does not read as a hard cut.
+ */
+.site-nav--cube[data-footer-hidden="true"] {
+  transform: translateY(calc(-100% - var(--promo-bar-height)));
+  will-change: transform;
+  pointer-events: none;
+  transition:
+    color 0.2s cubic-bezier(0.33, 0, 0.67, 1),
+    transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-nav--cube[data-footer-hidden="true"] .nav,
+.site-nav--cube[data-footer-hidden="true"] .nav button,
+.site-nav--cube[data-footer-hidden="true"] .nav a {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-nav--cube,
+  .site-nav--cube[data-footer-hidden="true"] {
+    transition: color 0.2s cubic-bezier(0.33, 0, 0.67, 1);
+  }
+}
+
+.site-nav__perspective {
+  width: 100%;
+  height: var(--nav-height);
+  perspective: 1100px;
+  perspective-origin: 50% 50%;
+}
+
+.site-nav__cube {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.site-nav__face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* Depth (translateZ) is GSAP-owned during intro so it can ease to 0 —
+     avoids a last-frame shrink when clearing a lingering Z offset. */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* After intro: flatten 3D stage (cube/face already at identity from the tween) */
+.site-nav--cube.is-nav-settled .site-nav__cube {
+  transform-style: flat;
+  will-change: auto;
+}
+
+/* Scroll-aware header (non-homepage GlobalNavigation only) */
+.site-nav[data-header-nav="solo"] {
+  /* Promo hidden — slide nav up to the viewport top edge */
+  transform: translateY(calc(-1 * var(--promo-bar-height)));
+}
+
+.site-nav[data-header-nav="hidden"] {
+  /* Full stack off-screen */
+  transform: translateY(calc(-100% - var(--promo-bar-height)));
+}
+
+.site-nav[data-header-nav="hidden"] .nav,
+.site-nav[data-header-nav="hidden"] .nav button,
+.site-nav[data-header-nav="hidden"] .nav a {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-nav {
+    transition: color 0.2s cubic-bezier(0.33, 0, 0.67, 1);
+  }
+}
+
+.site-nav[data-nav-color="black"] {
+  color: var(--color-black);
+}
+
+.site-nav[data-nav-color="white"] {
+  color: #fff;
+}
+
+.page[data-state="intro"] .site-nav {
+  /* Hidden until handoff; final top/geometry already set — GSAP owns rotateX */
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.page[data-state="intro"] [data-hero-enter="copy"] {
+  opacity: 0;
+}
+
+.page[data-state="ready"] .site-nav {
+  visibility: visible;
+  pointer-events: none;
+}
+
+.site-nav .nav,
+.site-nav .nav button,
+.site-nav .nav a {
+  pointer-events: auto;
+  color: inherit;
+}
+
+/* —— Nav (Figma 158:316 Nav Bar, 54px) —— */
+.nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: var(--nav-height);
+  /* Figma: menu x=34, bag right inset 32 */
+  padding: 0 32px 0 34px;
+  background: transparent;
+}
+
+.nav__menu {
+  justify-self: start;
+  width: 22px;
+  height: 9.25px;
+  display: flex;
+  align-items: center;
+  color: inherit;
+}
+
+.nav__menu svg {
+  display: block;
+  width: 22px;
+  height: 9.25px;
+}
+
+.nav__logo {
+  width: 38px;
+  height: 18px;
+  color: inherit;
+}
+
+.nav__logo svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.nav__actions {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  /* Figma: search x=310, bag x=350 → 20px gap between 20×20 targets */
+  gap: 20px;
+}
+
+.nav__actions button {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+
+.nav__actions svg {
+  display: block;
+}
+
+/* Figma 158:316 — bag vector sits in a 16.5 frame inside the 20×20 hit target */
+.nav__actions .nav__icon-bag {
+  width: 16.5px;
+  height: 16.5px;
+  flex-shrink: 0;
+}
+
+/* —— Stacked sections (Figma Scroll 72:381) —— */
+.stacked-sections {
+  position: relative;
+  width: 100%;
+  background: #000;
+}
+
+.stack-wrap {
+  position: relative;
+  width: 100%;
+  /* JS sets --stack-scroll-units + --stack-view-h to match the page scrollport */
+  height: calc(
+    var(--stack-scroll-units, 8) * var(--stack-view-h, 100svh)
+  );
+}
+
+.stack-stage {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: var(--stack-view-h, 100svh);
+  overflow: clip;
+  overflow: hidden;
+  background: #000;
+}
+
+.stacked-section {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transform-origin: center center;
+  will-change: transform;
+  /* Transforms are owned by GSAP — do not set CSS translate here */
+}
+
+/* —— Sections —— */
+.section {
+  background: var(--color-white);
+}
+
+.section--hero,
+.section--utility,
+.section--bts {
+  background: #000;
+  color: var(--color-white);
+}
+
+/* Sezane — Figma 146:422 (402×874), absolute like product card so dvh scales ratios */
+.section--editorial {
+  position: relative;
+  background: var(--color-white);
+  color: var(--color-black);
+}
+
+/* 9060 Drop — Figma 147:713 (402×874) */
+.section--product {
+  background: var(--color-white);
+  color: var(--color-black);
+}
+
+.section__inner--product {
+  position: relative;
+  display: block;
+  height: 100%;
+  min-height: 100%;
+  padding: 0;
+  text-align: center;
+}
+
+.section__media--bleed {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.section__media--bleed img,
+.section__media--bleed video,
+.section__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.section__media--bleed video {
+  object-position: center;
+  display: block;
+}
+
+.section--hero {
+  background: #111;
+  width: 100%;
+}
+
+.section--hero .section__media--bleed {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #111;
+}
+
+.section__photo--utility {
+  /* Full-frame export includes chrome; crop to photographic field */
+  object-fit: cover;
+  object-position: center 35%;
+  transform: scale(1.08);
+}
+
+.section__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Figma 146:424 — image 16×170, 370×560 within 402×874 */
+.section__media--inset {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: calc(170 / 874 * 100%);
+  height: calc(560 / 874 * 100%);
+  width: auto;
+  max-width: none;
+  margin: 0;
+  overflow: hidden;
+}
+
+.section__media--inset img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.section__media--product {
+  position: absolute;
+  left: 0;
+  top: calc(263 / 874 * 100%);
+  width: 100%;
+  height: calc(268 / 874 * 100%);
+  margin: 0;
+}
+
+.section__media--product img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+/* Two classes so this wins over `.section__copy { position: relative }`. */
+.section__copy.section__copy--product {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(710 / 874 * 100%);
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transform: none;
+}
+
+/*
+ * 9060 — one Link wraps the full copy/CTA zone (title, subtitle, CTA, gaps).
+ * Media stays a sibling outside this hit target.
+ */
+.section__copy--product .section__product-hit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: inherit;
+  text-decoration: none;
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.section__copy--product .section__product-hit:active,
+.section__copy--product .section__product-hit:focus {
+  background: transparent;
+  outline: none;
+}
+
+.section__copy--product .section__product-hit:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+.section__copy--product .section__title,
+.section__copy--product .section__subtitle,
+.section__copy--product .section__cta {
+  width: 100%;
+  max-width: 370px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.section__copy--product .section__title {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.section__copy--product .section__subtitle {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/*
+ * 9060 CTA label — Figma subtitle top 750 → CTA text top 805: the 35px gap is
+ * split into 10px margin + 25px padding so the label sits in the same place
+ * while the row stays 70px tall inside the shared hit Link.
+ */
+.section__copy--product .section__cta {
+  margin-top: 10px;
+  display: block;
+  width: 100%;
+  min-height: 70px;
+  padding: 25px 0;
+  box-sizing: border-box;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: from-font;
+}
+
+.section__copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: calc(100% - 64px);
+  max-width: 338px;
+  margin: 0 auto;
+}
+
+/* Two classes so this wins over `.section__copy { position: relative }`. */
+.section__copy.section__copy--hero {
+  position: absolute;
+  left: 50%;
+  bottom: max(48px, 5.5vh);
+  transform: translateX(-50%);
+  width: calc(100% - 64px);
+}
+
+.section__copy--dark {
+  color: var(--color-black);
+  margin-top: auto;
+  padding-bottom: 24px;
+}
+
+/* Figma 146:426 / 146:436 — subtitle y750, CTA y805 */
+/* Two classes so this wins over `.section__copy { position: relative }`. */
+.section__copy.section__copy--editorial {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(750 / 874 * 100%);
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.section__copy--editorial .section__subtitle {
+  margin: 0;
+}
+
+/* Desktop keeps 146:422 copy; mobile uses 147:649 (toggled in max-width query). */
+.section__subtitle--editorial-mobile {
+  display: none;
+}
+
+.section__copy--editorial .section__cta {
+  margin-top: 35px;
+}
+
+.section__title {
+  font-family: var(--font-display);
+  font-weight: var(--font-display-weight);
+  font-synthesis: none;
+  font-size: 32px;
+  line-height: 40px;
+  letter-spacing: 0.32px;
+}
+
+.section__title--hero {
+  font-size: 36px;
+  letter-spacing: 0.36px;
+}
+
+.section__title-u {
+  letter-spacing: -1.08px;
+}
+
+/* Figma 146:427 — title y110, 36×40 */
+.section__title--top {
+  position: absolute;
+  left: 50%;
+  top: calc(110 / 874 * 100%);
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 36px;
+  line-height: 40px;
+  letter-spacing: 0.36px;
+  color: var(--color-black);
+  text-align: center;
+  width: calc(100% - 64px);
+  max-width: 338px;
+}
+
+.section__subtitle {
+  margin-top: 0;
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.26px;
+}
+
+.section__copy--hero .section__title {
+  margin-bottom: 0;
+}
+
+.section__copy--hero .section__subtitle {
+  margin-top: 0;
+}
+
+.section__ctas,
+.section__cta {
+  margin-top: 35px;
+}
+
+.section__ctas {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+/* Hero wraps the CTA in .section__ctas — don't stack both 35px margins. */
+.section__ctas .section__cta {
+  margin-top: 0;
+}
+
+.section__cta {
+  font-size: 15px;
+  line-height: 20px;
+  letter-spacing: 0.15px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: from-font;
+}
+
+.section--editorial .section__cta,
+.section--product .section__cta {
+  color: var(--color-black);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page[data-state="intro"] .site-nav,
+  .page[data-state="intro"] [data-hero-enter="copy"] {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .stacked-section {
+    will-change: auto;
+  }
+}
+
+/*
+ * Mobile-only: pin every Homepage CTA to the Made in USA baseline.
+ *
+ * --hp-cta-bottom = distance from CTA text bottom → card/viewport bottom
+ * (same as Made in USA). CTAs are taken out of the title/subtitle flow so
+ * each card keeps its own typography layout; only the CTA Y is shared.
+ *
+ * (pointer: coarse) keeps this pin on real phones even when the layout
+ * viewport reports >768px (“Request Desktop Website”). Fine-pointer
+ * desktop preview stays on width via the 430px iframe.
+ */
+@media (max-width: 768px), (pointer: coarse) {
+  .page {
+    --hp-cta-bottom: max(
+      48px,
+      5.5vh,
+      calc(env(safe-area-inset-bottom, 0px) + 32px)
+    );
+    /* Made in USA: 20px CTA line-height + 35px subtitle→CTA gap */
+    --hp-cta-line: 20px;
+    --hp-subtitle-cta-gap: 35px;
+  }
+
+  /*
+   * Shared CTA pin — bottom edge of the label matches Made in USA.
+   * Containing copy wrappers are stretched to the card so `bottom` is
+   * viewport-relative, not content-stack-relative.
+   */
+  .section--hero .section__ctas,
+  .section--utility .section__copy--hero > .section__cta,
+  .section--bts .section__copy--hero > .section__cta,
+  .section--editorial .section__copy--editorial > .section__cta,
+  .section--product .section__product-hit > .section__cta {
+    position: absolute;
+    left: 50%;
+    bottom: var(--hp-cta-bottom);
+    transform: translateX(-50%);
+    margin-top: 0;
+    z-index: 3;
+  }
+
+  /* Made / Stone / BTS — title+subtitle sit above the pinned CTA */
+  .section__copy.section__copy--hero {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: auto;
+    max-height: none;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    box-sizing: border-box;
+    padding-bottom: calc(
+      var(--hp-cta-bottom) + var(--hp-cta-line) + var(--hp-subtitle-cta-gap)
+    );
+  }
+
+  .section__copy--hero .section__ctas .section__cta {
+    /* Label lives inside the pinned .section__ctas box */
+    position: static;
+    left: auto;
+    bottom: auto;
+    transform: none;
+    margin-top: 0;
+  }
+
+  /*
+   * Made in USA — cinematic bottom readability gradient (mobile layout /
+   * real phones / desktop-preview iframe). Peak sits behind title+subtitle
+   * (above the CTA band), then eases to 0%. Desktop wide keeps flat 10%.
+   */
+  .section--hero .section__scrim,
+  .intro-card--hero .section__scrim {
+    z-index: 1;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.08) 0%,
+      rgba(0, 0, 0, 0.28) 12%,
+      rgba(0, 0, 0, 0.22) 28%,
+      rgba(0, 0, 0, 0.1) 48%,
+      rgba(0, 0, 0, 0) 72%
+    );
+  }
+
+  /*
+   * Sezane — Figma 147:649 image/title; subtitle keeps its band; CTA pinned.
+   */
+  .section--editorial .section__title--top {
+    top: calc(150 / 874 * 100%);
+    transform: translate(-50%, -100%);
+  }
+
+  .section--editorial .section__media--inset {
+    top: calc(170 / 874 * 100%);
+    height: calc(560 / 874 * 100%);
+  }
+
+  .section__copy.section__copy--editorial {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: none;
+    padding: 0 32px;
+    margin: 0;
+  }
+
+  .section--editorial .section__copy--editorial .section__subtitle {
+    position: absolute;
+    left: 32px;
+    right: 32px;
+    top: calc(750 / 874 * 100%);
+    margin: 0;
+  }
+
+  .section--editorial .section__subtitle--editorial-desktop {
+    display: none;
+  }
+
+  .section--editorial .section__subtitle--editorial-mobile {
+    display: block;
+  }
+
+  .section--editorial .section__copy--editorial > .section__cta {
+    width: auto;
+    max-width: 338px;
+  }
+
+  /*
+   * 9060 media — independent of the copy layer (sibling, not in the flex).
+   * Lock the same Figma frame as base CSS so copy flex cannot affect it.
+   */
+  .section--product .section__media--product {
+    position: absolute;
+    left: 0;
+    top: calc(263 / 874 * 100%);
+    width: 100%;
+    height: calc(268 / 874 * 100%);
+    margin: 0;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .section--product .section__media--product img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Same as desktop — center bottom was clipping the shoe on phone */
+    object-position: center center;
+  }
+
+  /*
+   * 9060 copy — overlay only. Bottom-flex title/subtitle + pinned CTA.
+   * Does not participate in / resize the media frame.
+   */
+  .section__copy.section__copy--product {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: none;
+    transform: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0 16px;
+    padding-bottom: calc(
+      var(--hp-cta-bottom) + var(--hp-cta-line) + var(--hp-subtitle-cta-gap)
+    );
+    background: transparent;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /*
+   * Hit Link covers title → card bottom (CTA band + empty spacing) without
+   * covering the shoe media above. Negative margin cancels layout shift from
+   * the extra padding used only to enlarge the tap target.
+   */
+  .section__copy--product .section__product-hit {
+    pointer-events: auto;
+    width: 100%;
+    box-sizing: border-box;
+    padding-bottom: calc(
+      var(--hp-cta-bottom) + var(--hp-cta-line) + var(--hp-subtitle-cta-gap)
+    );
+    margin-bottom: calc(
+      -1 * (var(--hp-cta-bottom) + var(--hp-cta-line) + var(--hp-subtitle-cta-gap))
+    );
+    -webkit-tap-highlight-color: transparent;
+    background: transparent;
+  }
+
+  .section__copy--product .section__product-hit:active {
+    background: transparent;
+  }
+
+  .section__copy--product .section__title,
+  .section__copy--product .section__subtitle {
+    position: static;
+    top: auto;
+    left: auto;
+    right: auto;
+    width: 100%;
+    max-width: 370px;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: var(--color-black);
+  }
+
+  /*
+   * 9060 CTA label — same box as Made/Stone/BTS/Sezane (line-height only).
+   * Hit expansion lives on `.section__product-hit`, not on this label, so the
+   * shared `bottom: var(--hp-cta-bottom)` pin matches every other card.
+   */
+  .section__copy--product .section__product-hit > .section__cta {
+    display: block;
+    width: auto;
+    max-width: 370px;
+    box-sizing: border-box;
+    margin-top: 0;
+    min-height: 0;
+    padding: 0;
+    color: var(--color-black);
+  }
+}
+
+/* Real phones only — Sézane layout tweaks (desktop / desktop-preview unchanged) */
+@media (pointer: coarse) {
+  .section--editorial .section__title--top {
+    top: calc(150 / 874 * 100% + 10px);
+  }
+
+  /* Shorten frame from the bottom; top stay (incl. prior 10px nudge). Subtitle stays pinned. */
+  .section--editorial .section__media--inset {
+    top: calc(170 / 874 * 100% + 10px);
+    height: calc(560 / 874 * 100% - 35px);
+  }
+
+  /* Shift photo up inside the fixed frame — reveal more at the bottom; frame size unchanged */
+  .section--editorial .section__media--inset img {
+    height: calc(100% + 58px);
+    transform: translateY(-58px);
+  }
+
+  /*
+   * Pin subtitle above the shared CTA band — same 35px gap as Made / Stone / BTS
+   * instead of the Figma 750/874 top band (too much air to the CTA on phones).
+   */
+  .section--editorial .section__copy--editorial .section__subtitle {
+    top: auto;
+    bottom: calc(
+      var(--hp-cta-bottom) + var(--hp-cta-line) + var(--hp-subtitle-cta-gap)
+    );
+  }
+
+  /*
+   * Made in USA — shift photo 5px up inside the fixed frame on intro peep +
+   * final hero so the handoff matches. Phones only.
+   */
+  .section--hero .section__media--bleed .hero-photo,
+  .intro-card--hero .hero-photo {
+    height: calc(100% + 5px) !important;
+    transform: translateY(-5px);
+  }
+
+  /* Back to school — shift photo up inside the fixed bleed frame; frame unchanged */
+  .section--bts .section__media--bleed img {
+    height: calc(100% + 50px);
+    transform: translateY(-50px);
+  }
+}

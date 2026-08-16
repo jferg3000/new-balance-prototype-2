@@ -1,0 +1,107 @@
+/* Full-screen mobile drawer shell — Figma Filters 107:351 viewport fill. */
+
+.fs-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  width: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+}
+
+.fs-drawer__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(21, 20, 21, 0.35);
+  opacity: 1;
+  animation: fs-drawer-backdrop-in 400ms ease-out both;
+}
+
+.fs-drawer[data-closing="true"] .fs-drawer__backdrop {
+  animation: fs-drawer-backdrop-out 400ms ease-in both;
+}
+
+.fs-drawer__panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+  background: var(--color-white);
+  color: var(--color-black);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+  animation: fs-drawer-panel-in 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Transparent shell — content owns its own frost / imagery (e.g. PDP Description). */
+.fs-drawer__backdrop--clear {
+  background: transparent;
+}
+
+.fs-drawer__panel--clear {
+  background: transparent;
+}
+
+.fs-drawer[data-closing="true"] .fs-drawer__panel {
+  animation: fs-drawer-panel-out 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.fs-drawer__sr-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes fs-drawer-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fs-drawer-backdrop-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fs-drawer-panel-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fs-drawer-panel-out {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fs-drawer__backdrop,
+  .fs-drawer__panel {
+    animation: none;
+  }
+}

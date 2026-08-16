@@ -1,0 +1,196 @@
+/* Filter & sort drawer content — Figma 107:351 (402 artboard, fluid width). */
+
+.fd-drawer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--color-white);
+  color: var(--color-black);
+}
+
+/* —— Header: y32, x20, 12px label, 20×20 close —— */
+.fd-drawer__header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 32px 20px 0;
+  background: var(--color-white);
+  z-index: 1;
+}
+
+.fd-drawer__header-label {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  color: var(--color-black);
+}
+
+.fd-drawer__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-black);
+  cursor: pointer;
+}
+
+.fd-drawer__close:focus-visible {
+  outline: 2px solid var(--color-black);
+  outline-offset: 2px;
+}
+
+/* —— Scroll: Sort starts ~y85 → pad-top 29 from header label —— */
+.fd-drawer__scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.fd-drawer__scroll-inner {
+  padding: 29px 8px 24px;
+  box-sizing: border-box;
+}
+
+/* Sort-by uses 20px horizontal inset relative to artboard (= 12px inside 8px pad) */
+.fd-drawer__scroll-inner > .fd-section--sort {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.fd-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.fd-list--stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: min(152px, 100%);
+}
+
+.fd-list--gender {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: 8px;
+  row-gap: 0;
+  width: 100%;
+}
+
+.fd-list--price {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px 4px;
+  width: 100%;
+}
+
+.fd-list--price .fd-check {
+  min-width: 0;
+  padding: 16px 4px;
+  box-sizing: border-box;
+}
+
+.fd-list--color {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 152px));
+  justify-content: space-between;
+  column-gap: 40px;
+  row-gap: 24px;
+  width: 100%;
+  max-width: 362px;
+}
+
+/* —— Sticky CTA: 16px pad, 38px button, Reset below, safe-area —— */
+.fd-drawer__footer {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 16px max(16px, env(safe-area-inset-bottom));
+  background: var(--color-white);
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.fd-drawer__cta {
+  display: block;
+  width: 100%;
+  height: 38px;
+  margin: 0;
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 1px;
+  background: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: center;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.fd-drawer__cta-count {
+  display: inline;
+  animation: fd-count-in 220ms ease both;
+}
+
+@keyframes fd-count-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fd-drawer__cta-count {
+    animation: none;
+  }
+}
+
+.fd-drawer__cta:focus-visible {
+  outline: 2px solid var(--color-black);
+  outline-offset: 3px;
+}
+
+.fd-drawer__reset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--color-black);
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.14px;
+  color: var(--color-black);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.fd-drawer__reset:focus-visible {
+  outline: 2px solid var(--color-black);
+  outline-offset: 2px;
+}

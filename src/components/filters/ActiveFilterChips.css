@@ -1,0 +1,103 @@
+/* Figma 112:798 — active filter chips */
+
+.plp-active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  margin: 32px 0 0;
+  /* Same inline inset as .plp-toolbar — replaces the old 16px gutter */
+  padding-inline: 24px;
+  padding-block: 0;
+  list-style: none;
+  box-sizing: border-box;
+}
+
+.plp-active-filters__chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 25px;
+  margin: 0;
+  padding: 2px;
+  border: 0;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.15);
+  background: transparent;
+  box-sizing: border-box;
+}
+
+.plp-active-filters__chip--clear {
+  /* Same 25px chip box so the underline shares the filter-chip baseline */
+  border-bottom: 1px solid var(--color-black);
+}
+
+.plp-active-filters__swatch {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  box-sizing: border-box;
+}
+
+.plp-active-filters__swatch--white {
+  background: var(--color-white);
+  border: 0.25px solid var(--color-black);
+}
+
+.plp-active-filters__label {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  color: var(--color-black);
+  white-space: nowrap;
+}
+
+.plp-active-filters__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-black);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.plp-active-filters__remove:focus-visible {
+  outline: 2px solid var(--color-black);
+  outline-offset: 2px;
+}
+
+.plp-active-filters__clear {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  color: var(--color-black);
+  white-space: nowrap;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.plp-active-filters__clear:focus-visible {
+  outline: 2px solid var(--color-black);
+  outline-offset: 2px;
+}

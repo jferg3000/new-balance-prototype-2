@@ -1,0 +1,31 @@
+/* Desktop-only preview stage — never wraps the live app tree. */
+
+html:has(.desktop-preview-host),
+html:has(.desktop-preview-host) body,
+html:has(.desktop-preview-host) #root {
+  background: #272727;
+}
+
+.desktop-preview-host {
+  box-sizing: border-box;
+  min-height: 100dvh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: #272727;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.desktop-preview-host__frame {
+  display: block;
+  width: 100%;
+  max-width: 430px;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #fff;
+  /* Flat preview frame — no device chrome */
+}

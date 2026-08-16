@@ -1,0 +1,57 @@
+.fd-color {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 16px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.fd-color__input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  pointer-events: none;
+}
+
+.fd-color__swatch {
+  position: relative;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  box-sizing: border-box;
+}
+
+.fd-color__swatch--white {
+  background: var(--color-white);
+  border: 0.25px solid var(--color-black);
+}
+
+/* Selected: keep swatch color; thin outer outline with small gap (match Figma). */
+.fd-color__input:checked + .fd-color__swatch {
+  outline: 0.5px solid var(--color-black);
+  outline-offset: 1px;
+}
+
+.fd-color__label {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  color: var(--color-black);
+  white-space: nowrap;
+}
+
+.fd-color__input:focus-visible + .fd-color__swatch {
+  outline: 2px solid var(--color-black);
+  outline-offset: 2px;
+}
+
+.fd-color__input:checked:focus-visible + .fd-color__swatch {
+  outline: 2px solid var(--color-black);
+  outline-offset: 2px;
+}

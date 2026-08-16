@@ -1,0 +1,334 @@
+/* Quick Shop drawer content — Figma 114:827 (402×874 artboard, fluid width). */
+
+.qs-drawer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--color-white);
+  color: var(--color-black);
+  box-sizing: border-box;
+}
+
+.qs-drawer__icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.qs-drawer__star {
+  display: block;
+  width: 10px;
+  height: 10px;
+  flex: 0 0 auto;
+}
+
+/* Close — Figma: 24×24 at top 24 / right 24 */
+.qs-drawer__close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.qs-drawer__close:focus-visible {
+  outline: 2px solid var(--color-black);
+  outline-offset: 2px;
+}
+
+.qs-drawer__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: 100px 24px 0;
+  box-sizing: border-box;
+}
+
+/* Title block — Figma left/right 32 (= 8px inset inside 24px pad) */
+.qs-drawer__title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  margin: 0 8px;
+  text-align: center;
+}
+
+.qs-drawer__title-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  color: var(--color-black);
+}
+
+.qs-drawer__name {
+  margin: 0;
+  width: 100%;
+  font-family: var(--font-display);
+  font-weight: var(--font-display-weight);
+  font-size: 28px;
+  line-height: 32px;
+  letter-spacing: 0.28px;
+  color: var(--color-black);
+}
+
+.qs-drawer__price {
+  margin: 0;
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.12px;
+  color: var(--color-black);
+}
+
+.qs-drawer__tagline {
+  margin: 0;
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.12px;
+  color: var(--color-grey-80);
+}
+
+/* Product image — Figma 354×354; full width minus 24+24 pad */
+.qs-drawer__media {
+  position: relative;
+  width: 100%;
+  max-width: 354px;
+  aspect-ratio: 1 / 1;
+  /* Figma: title ends ~y184, image y192 → 8px */
+  margin: 8px auto 0;
+  overflow: hidden;
+}
+
+.qs-drawer__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Indicator + reviews — Figma y624 after image end y546 → 78px gap */
+.qs-drawer__meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 78px 8px 0;
+  min-height: 10px;
+}
+
+.qs-drawer__indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 1px;
+}
+
+.qs-drawer__indicator-seg {
+  display: block;
+  height: 1px;
+  width: 45px;
+  background: var(--color-black);
+  opacity: 0.1;
+  mix-blend-mode: multiply;
+}
+
+.qs-drawer__indicator-seg--active {
+  width: 25px;
+  opacity: 1;
+}
+
+.qs-drawer__reviews {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.qs-drawer__rating {
+  color: #000;
+}
+
+.qs-drawer__review-count {
+  color: #767676;
+}
+
+.qs-drawer__review-link {
+  text-decoration: underline;
+  text-underline-offset: 1px;
+}
+
+/* Sticky bottom CTA cluster — Figma CTAs y690, details y808 */
+.qs-drawer__footer {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 32px calc(24px + env(safe-area-inset-bottom, 0px));
+  background: var(--color-white);
+  box-sizing: border-box;
+}
+
+.qs-drawer__ctas {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 20px;
+  width: 100%;
+}
+
+.qs-drawer__color {
+  position: relative;
+  width: 100%;
+}
+
+.qs-drawer__color-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: none;
+  color: var(--color-black);
+  text-align: left;
+}
+
+.qs-drawer__color-trigger:focus-visible {
+  outline: 2px solid var(--color-black);
+  outline-offset: 2px;
+}
+
+.qs-drawer__swatch-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.qs-drawer__swatch {
+  display: block;
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  border-radius: 1px;
+  box-sizing: border-box;
+}
+
+.qs-drawer__color-label {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.12px;
+  color: var(--color-black);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.qs-drawer__color-menu {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 8px 0;
+  border: 1px solid rgba(21, 20, 21, 0.08);
+  background: var(--color-white);
+  box-sizing: border-box;
+}
+
+.qs-drawer__color-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin: 0;
+  padding: 10px 12px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  color: var(--color-black);
+}
+
+.qs-drawer__color-option[data-selected="true"] {
+  background: #f7f7f7;
+}
+
+.qs-drawer__color-option:focus-visible {
+  outline: 2px solid var(--color-black);
+  outline-offset: -2px;
+}
+
+.qs-drawer__add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 38px;
+  margin: 0;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 1px;
+  background: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.14px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.qs-drawer__add:focus-visible {
+  outline: 2px solid var(--color-black);
+  outline-offset: 2px;
+}
+
+.qs-drawer__details {
+  margin-top: 20px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.28px;
+  color: var(--color-black);
+  text-align: center;
+  text-decoration: underline;
+  text-decoration-thickness: 5%;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+}
+
+.qs-drawer__details:focus-visible {
+  outline: 2px solid var(--color-black);
+  outline-offset: 2px;
+}

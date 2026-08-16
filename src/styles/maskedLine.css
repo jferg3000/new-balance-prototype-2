@@ -1,0 +1,48 @@
+/*
+ * Masked line typography reveal (title / subtitle).
+ * Driven by MaskedLine → .masked-line__text--play.
+ */
+
+.masked-line {
+  display: block;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.masked-line__text {
+  display: block;
+  transform: translate3d(0, 115%, 0);
+  opacity: 0.85;
+}
+
+/* Animation only when armed — scroll/IO or mount sets --play */
+.masked-line__text--play {
+  animation-name: masked-line-reveal;
+  animation-duration: var(--reveal-duration, 720ms);
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-delay: var(--reveal-delay, 0ms);
+  /* backwards = hidden state during delay (no FOUC); forwards = rest at end */
+  animation-fill-mode: both;
+}
+
+@keyframes masked-line-reveal {
+  from {
+    transform: translate3d(0, 115%, 0);
+    opacity: 0.85;
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .masked-line__text {
+    animation: none !important;
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+    will-change: auto !important;
+  }
+}

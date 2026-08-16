@@ -1,0 +1,48 @@
+/*
+ * Shared scroll reveal (PDP sections + PLP below-hero modules).
+ * Driven by usePdpRevealOnce → data-pdp-reveal pending|in on .pdp-reveal-section.
+ * Without the attribute (no JS), content stays at final visible layout.
+ */
+
+/* Commerce pages: keep document bg white so opacity:0 reveals don’t flash body #000 */
+html:has(.plp),
+html:has(.plp) body,
+html:has(.pdp),
+html:has(.pdp) body,
+html:has(.si),
+html:has(.si) body {
+  background: #fff;
+}
+
+.pdp-reveal-section {
+  --pdp-reveal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --pdp-reveal-duration: 700ms;
+  --pdp-reveal-y: 24px;
+  --pdp-reveal-stagger: 80ms;
+}
+
+.pdp-reveal-section[data-pdp-reveal="pending"] {
+  opacity: 0;
+  transform: translateY(var(--pdp-reveal-y));
+  transition: none;
+  /* Don’t let a transparent layer punch through to a dark root behind */
+  pointer-events: none;
+}
+
+.pdp-reveal-section[data-pdp-reveal="in"] {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--pdp-reveal-duration) var(--pdp-reveal-ease),
+    transform var(--pdp-reveal-duration) var(--pdp-reveal-ease);
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdp-reveal-section[data-pdp-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    pointer-events: auto;
+  }
+}

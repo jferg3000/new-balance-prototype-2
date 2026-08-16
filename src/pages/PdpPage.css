@@ -1,0 +1,1903 @@
+/* PDP — Figma 108:540 static template (mobile fluid, ~390–430) */
+
+.pdp {
+  --pdp-black: #151415;
+  --pdp-grey-80: #444344;
+  --pdp-grey-50: #767676;
+  --pdp-grey-40: #999999;
+  --pdp-grey-20: #d0d0d0;
+  --pdp-grey-12: #e3e3e3;
+  --pdp-grey-10: #e8e8e8;
+  --pdp-grey: #f7f7f7;
+  --pdp-gutter: 16px;
+  --pdp-inset: 32px;
+  background: var(--color-white);
+  color: var(--pdp-black);
+  min-height: 100vh;
+}
+
+.pdp__main {
+  padding-top: calc(var(--promo-bar-height) + var(--nav-height));
+  /* Always-fixed CTA — keep content clear of the detailed shell height */
+  padding-bottom: calc(130px + env(safe-area-inset-bottom, 0px));
+}
+
+.pdp[data-atc-mode="simple"] .pdp__main {
+  padding-bottom: calc(50px + env(safe-area-inset-bottom, 0px));
+}
+
+/*
+ * WIP / fallback PDP — non-highlighted products keep layout & hero,
+ * but replace all product imagery below the hero with solid #F3F3F3.
+ */
+.pdp[data-pdp-mode="placeholder"] .pdp-section2__media,
+.pdp[data-pdp-mode="placeholder"] .pdp-stl__shot,
+.pdp[data-pdp-mode="placeholder"] .pdp-style__media,
+.pdp[data-pdp-mode="placeholder"] .pdp-compare__thumb,
+.pdp[data-pdp-mode="placeholder"] .pdp-compare__thumb-img,
+.pdp[data-pdp-mode="placeholder"] .pdp-editors__hero,
+.pdp[data-pdp-mode="placeholder"] .pdp-editors__thumb,
+.pdp[data-pdp-mode="placeholder"] .pdp-pairings__card {
+  background: #f3f3f3;
+}
+
+/* —— Hero 108:731 —— */
+.pdp-hero {
+  /* Fill viewport below Promo + Nav so Section 2 starts below the fold */
+  --pdp-hero-cta-clearance: calc(130px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
+  min-height: calc(100dvh - var(--promo-bar-height) - var(--nav-height));
+  /* Top inset from Figma; bottom clears the fixed detailed ATC overlay */
+  padding: 16px 0 var(--pdp-hero-cta-clearance);
+}
+
+.pdp-hero__title {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 24px;
+  width: 100%;
+  padding: 0 var(--pdp-inset);
+  box-sizing: border-box;
+}
+
+.pdp-hero__identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.pdp-hero__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--font-display-weight, 300);
+  font-size: 28px;
+  line-height: 32px;
+  letter-spacing: 0.28px;
+  color: var(--pdp-black);
+}
+
+.pdp-hero__price {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.12px;
+  color: var(--pdp-black);
+}
+
+.pdp-hero__tagline {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.12px;
+  color: var(--pdp-grey-80);
+}
+
+.pdp-hero__gallery {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px; /* was 46px */
+  min-height: 0;
+  width: 100%;
+  padding: 0 24px;
+  box-sizing: border-box;
+  overflow: hidden;
+  /* With meta: lift shoe + indicator/reviews together without reflow */
+  transform: translateY(-30px);
+}
+
+.pdp-hero__slide {
+  position: relative;
+  width: min(100%, 354px);
+  aspect-ratio: 1;
+  max-height: 100%;
+  margin: 0 auto;
+}
+
+.pdp-hero__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.pdp-hero__meta {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px; /* was 24px — 20px closer to the shoe */
+  min-height: 12px;
+  padding: 0 var(--pdp-inset);
+  box-sizing: border-box;
+  transform: translateY(-10px); /* was -30px — down 20px; shoe unchanged */
+}
+
+.pdp-hero__indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 1px;
+}
+
+.pdp-hero__indicator-active {
+  display: block;
+  width: 25px;
+  height: 1px;
+  background: var(--pdp-black);
+  mix-blend-mode: multiply;
+}
+
+.pdp-hero__indicator-rest {
+  display: block;
+  width: 45px;
+  height: 1px;
+  background: var(--pdp-black);
+  opacity: 0.1;
+  mix-blend-mode: multiply;
+}
+
+.pdp-hero__reviews {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pdp-hero__star {
+  width: 10px;
+  height: 10px;
+  display: block;
+}
+
+.pdp-hero__rating {
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.24px;
+  color: var(--color-black);
+}
+
+.pdp-hero__count {
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.24px;
+  color: var(--pdp-grey-50);
+  text-decoration: underline;
+}
+
+/*
+ * Mobile short-viewport Hero — keep indicator + reviews above the sticky ATC
+ * without scrolling. Shrink only flexible media / gaps; type & CTA unchanged.
+ * Desktop (wider viewports) keeps the base rules above.
+ */
+@media (max-width: 768px) {
+  .pdp-hero {
+    /*
+     * Prefer the small viewport height so Safari’s visible chrome doesn’t
+     * push meta into the ATC overlay zone.
+     */
+    min-height: calc(100svh - var(--promo-bar-height) - var(--nav-height));
+    /*
+     * Remaining budget for the square shoe after chrome, title, meta, gaps,
+     * and the fixed ATC clearance. Used to cap image width (= height).
+     */
+    --pdp-hero-media-budget: calc(
+      100svh - var(--promo-bar-height) - var(--nav-height) -
+        var(--pdp-hero-cta-clearance) - 16px - 110px - 40px
+    );
+  }
+
+  .pdp-hero__gallery {
+    margin-top: clamp(8px, 2.5svh, 16px);
+  }
+
+  .pdp-hero__slide {
+    /* Width follows the shorter of fluid width and height budget so the
+       1:1 shoe scales down on short phones instead of overflowing. */
+    width: min(100%, 354px, var(--pdp-hero-media-budget));
+    max-height: min(100%, 354px, var(--pdp-hero-media-budget));
+  }
+
+  .pdp-hero__meta {
+    margin-top: clamp(4px, 1svh, 4px);
+  }
+}
+
+@media (max-width: 768px) and (max-height: 780px) {
+  .pdp-hero {
+    --pdp-hero-media-budget: calc(
+      100svh - var(--promo-bar-height) - var(--nav-height) -
+        var(--pdp-hero-cta-clearance) - 16px - 100px - 32px
+    );
+  }
+
+  .pdp-hero__title {
+    gap: clamp(12px, 2svh, 24px);
+  }
+
+  .pdp-hero__gallery {
+    margin-top: clamp(4px, 1.2svh, 16px);
+  }
+
+  .pdp-hero__meta {
+    margin-top: 4px;
+  }
+}
+
+/*
+ * PDP-only motion (hero enter + Shop the Look reveal).
+ * Progressive: without data-pdp-enter / data-pdp-reveal, content stays at final layout.
+ * Copy (title + price + tagline) animates as one block on .pdp-hero__title.
+ * Gallery/meta keep their layout translateY — entrance composes with those finals.
+ */
+.pdp-hero {
+  --pdp-enter-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --pdp-copy-enter-duration: 720ms;
+  --pdp-shoe-enter-duration: 600ms;
+  --pdp-shoe-enter-delay: 80ms;
+  --pdp-meta-enter-duration: 450ms;
+  --pdp-meta-enter-delay: 160ms;
+  --pdp-meta-enter-y: 8px;
+}
+
+/* Unified hero copy group — no per-line stagger */
+.pdp-hero[data-pdp-enter="pending"] .pdp-hero__title {
+  opacity: 0;
+  transform: scale(0.98);
+  transform-origin: center top;
+}
+
+.pdp-hero[data-pdp-enter="pending"] .pdp-hero__slide {
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+.pdp-hero[data-pdp-enter="pending"] .pdp-hero__meta {
+  opacity: 0;
+  /* Layout settle is translateY(-10px); start 8px below that */
+  transform: translateY(calc(-10px + var(--pdp-meta-enter-y)));
+}
+
+.pdp-hero[data-pdp-enter="in"] .pdp-hero__title {
+  opacity: 1;
+  transform: scale(1);
+  transform-origin: center top;
+  transition:
+    opacity var(--pdp-copy-enter-duration) var(--pdp-enter-ease),
+    transform var(--pdp-copy-enter-duration) var(--pdp-enter-ease);
+}
+
+.pdp-hero[data-pdp-enter="in"] .pdp-hero__slide {
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    opacity var(--pdp-shoe-enter-duration) var(--pdp-enter-ease),
+    transform var(--pdp-shoe-enter-duration) var(--pdp-enter-ease);
+  transition-delay: var(--pdp-shoe-enter-delay);
+}
+
+.pdp-hero[data-pdp-enter="in"] .pdp-hero__meta {
+  opacity: 1;
+  transform: translateY(-10px);
+  transition:
+    opacity var(--pdp-meta-enter-duration) var(--pdp-enter-ease),
+    transform var(--pdp-meta-enter-duration) var(--pdp-enter-ease);
+  transition-delay: var(--pdp-meta-enter-delay);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdp-hero[data-pdp-enter] .pdp-hero__title,
+  .pdp-hero[data-pdp-enter] .pdp-hero__slide {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .pdp-hero[data-pdp-enter] .pdp-hero__meta {
+    opacity: 1;
+    transform: translateY(-10px);
+    transition: none;
+  }
+}
+
+/*
+ * Sole PDP Add to Bag — always position:fixed (portaled to body).
+ * Morphs detailed (125:1077) ↔ simple (125:1074) on the same shell.
+ * Duration/ease tokens injected from pdpStickyAtcMotion.ts
+ */
+.pdp-sticky-atc {
+  --pdp-black: #151415;
+  --pdp-grey-50: #767676;
+  --pdp-grey: #f7f7f7;
+  --pdp-inset: 32px;
+  /* Fallbacks if JS tokens are unavailable */
+  --pdp-atc-morph-duration: 620ms;
+  --pdp-atc-morph-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --pdp-atc-content-fade-duration: 220ms;
+  --pdp-atc-content-fade-delay: 0ms;
+  --pdp-atc-simple-fade-duration: 260ms;
+  --pdp-atc-simple-fade-delay: 150ms;
+  /* Footer dismiss / reappear (does not change data-mode) */
+  --pdp-atc-footer-dismiss-duration: 300ms;
+  --pdp-atc-footer-dismiss-ease: cubic-bezier(0.4, 0, 1, 1);
+  --pdp-atc-footer-reappear-duration: 360ms;
+  --pdp-atc-footer-reappear-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 95; /* below Main Nav (100) / Promo (120); above PDP content */
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0);
+  transition: transform var(--pdp-atc-footer-reappear-duration)
+    var(--pdp-atc-footer-reappear-ease);
+  will-change: transform;
+}
+
+/* Footer in view — slide completely below the viewport; stay mounted. */
+.pdp-sticky-atc[data-footer-hidden="true"] {
+  transform: translate3d(
+    0,
+    calc(100% + env(safe-area-inset-bottom, 0px)),
+    0
+  );
+  pointer-events: none;
+  transition-duration: var(--pdp-atc-footer-dismiss-duration);
+  transition-timing-function: var(--pdp-atc-footer-dismiss-ease);
+}
+
+/* Detailed — Figma 125:1077 (402×130 frosted buy pack) */
+.pdp-sticky-atc__shell {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px var(--pdp-inset) calc(28px + env(safe-area-inset-bottom, 0px));
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(37.5px);
+  -webkit-backdrop-filter: blur(37.5px);
+  transition:
+    gap var(--pdp-atc-morph-duration) var(--pdp-atc-morph-ease),
+    padding var(--pdp-atc-morph-duration) var(--pdp-atc-morph-ease),
+    background-color var(--pdp-atc-morph-duration) var(--pdp-atc-morph-ease),
+    backdrop-filter var(--pdp-atc-morph-duration) var(--pdp-atc-morph-ease);
+}
+
+.pdp-sticky-atc__color {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: none;
+  text-align: left;
+  min-height: 24px;
+  max-height: 24px;
+  overflow: hidden;
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  /* Height collapses with the shell; opacity uses the faster content fade */
+  transition:
+    max-height var(--pdp-atc-morph-duration) var(--pdp-atc-morph-ease),
+    min-height var(--pdp-atc-morph-duration) var(--pdp-atc-morph-ease),
+    transform var(--pdp-atc-morph-duration) var(--pdp-atc-morph-ease),
+    opacity var(--pdp-atc-content-fade-duration) var(--pdp-atc-morph-ease)
+      var(--pdp-atc-content-fade-delay);
+}
+
+.pdp-sticky-atc__swatch {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 1px;
+}
+
+.pdp-sticky-atc__color-name {
+  flex: 1;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.12px;
+  color: var(--pdp-black);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pdp-sticky-atc__chevron {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.pdp-sticky-atc__cta {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex-shrink: 0;
+  height: 38px;
+  margin: 0;
+  padding: 10px 20px;
+  border: 1px solid var(--pdp-grey-50);
+  border-radius: 1px;
+  background: var(--pdp-black);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.14px;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition:
+    height var(--pdp-atc-morph-duration) var(--pdp-atc-morph-ease),
+    min-height var(--pdp-atc-morph-duration) var(--pdp-atc-morph-ease),
+    padding var(--pdp-atc-morph-duration) var(--pdp-atc-morph-ease),
+    border-radius var(--pdp-atc-morph-duration) var(--pdp-atc-morph-ease),
+    border-color var(--pdp-atc-morph-duration) var(--pdp-atc-morph-ease),
+    background-color var(--pdp-atc-morph-duration) var(--pdp-atc-morph-ease),
+    line-height var(--pdp-atc-morph-duration) var(--pdp-atc-morph-ease);
+}
+
+.pdp-sticky-atc__cta:focus-visible {
+  outline: 2px solid var(--pdp-black);
+  outline-offset: 2px;
+}
+
+/* Label crossfade — overlapping so the morph never flashes empty */
+.pdp-sticky-atc__label {
+  display: block;
+  white-space: nowrap;
+}
+
+.pdp-sticky-atc__label--detailed {
+  opacity: 1;
+  color: #fff;
+  /* Returning to detailed: settle in after simple label starts clearing */
+  transition: opacity var(--pdp-atc-content-fade-duration) var(--pdp-atc-morph-ease)
+    var(--pdp-atc-simple-fade-delay);
+}
+
+.pdp-sticky-atc__label--simple {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  color: var(--pdp-grey);
+  pointer-events: none;
+  /* Exiting simple: fade out immediately (no delay) */
+  transition: opacity var(--pdp-atc-simple-fade-duration) var(--pdp-atc-morph-ease);
+}
+
+/* Simple — Figma 125:1074 CTA_V2 (full-bleed black; height tuned to 50px) */
+.pdp-sticky-atc[data-mode="simple"] .pdp-sticky-atc__shell {
+  gap: 0;
+  padding: 0;
+  background: #000;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.pdp-sticky-atc[data-mode="simple"] .pdp-sticky-atc__color {
+  max-height: 0;
+  min-height: 0;
+  opacity: 0;
+  transform: translate3d(0, -6px, 0);
+  pointer-events: none;
+  /* Leaving detailed: fade immediately */
+  transition:
+    max-height var(--pdp-atc-morph-duration) var(--pdp-atc-morph-ease),
+    min-height var(--pdp-atc-morph-duration) var(--pdp-atc-morph-ease),
+    transform var(--pdp-atc-morph-duration) var(--pdp-atc-morph-ease),
+    opacity var(--pdp-atc-content-fade-duration) var(--pdp-atc-morph-ease);
+}
+
+.pdp-sticky-atc[data-mode="simple"] .pdp-sticky-atc__cta {
+  height: auto;
+  min-height: 50px;
+  padding: 17px 20px calc(16px + env(safe-area-inset-bottom, 0px));
+  border-color: transparent;
+  border-radius: 0;
+  background: #000;
+  line-height: 1.2;
+}
+
+.pdp-sticky-atc[data-mode="simple"] .pdp-sticky-atc__label--detailed {
+  opacity: 0;
+  /* Leaving detailed: fade immediately */
+  transition: opacity var(--pdp-atc-content-fade-duration) var(--pdp-atc-morph-ease);
+}
+
+.pdp-sticky-atc[data-mode="simple"] .pdp-sticky-atc__label--simple {
+  opacity: 1;
+  /* Entering simple: slight delay so it overlaps the detailed fade */
+  transition: opacity var(--pdp-atc-simple-fade-duration) var(--pdp-atc-morph-ease)
+    var(--pdp-atc-simple-fade-delay);
+}
+
+.pdp-sticky-atc[data-mode="simple"] .pdp-sticky-atc__cta:focus-visible {
+  outline-color: var(--pdp-grey);
+  outline-offset: -4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdp-sticky-atc,
+  .pdp-sticky-atc__shell,
+  .pdp-sticky-atc__color,
+  .pdp-sticky-atc__cta,
+  .pdp-sticky-atc__label--detailed,
+  .pdp-sticky-atc__label--simple {
+    transition: none;
+  }
+}
+
+/*
+ * Section 2 — Updated PDP Figma 161:771 (9061, 402×716).
+ * Image 8,8 386×298.37 → gap ~17px → panel y323 h382 (pad 44/16/52).
+ * Lead → 46px → accordion rows @ 48px pitch, Grey-20 dividers.
+ */
+.pdp-section2 {
+  --pdp-accordion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --pdp-accordion-duration: 340ms;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--color-white);
+}
+
+.pdp-section2__media {
+  position: relative;
+  width: 100%;
+  padding: 8px 8px 0;
+  /* Image bottom 306.37 → panel top 323 */
+  margin-bottom: 17px;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: var(--color-white);
+}
+
+.pdp-section2__composition {
+  display: block;
+  width: 100%;
+  aspect-ratio: 386 / 298.37;
+  height: auto;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.pdp-section2__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  /* Content block 44→330 within 382 panel → 52px bottom */
+  padding: 44px 16px 52px;
+  background: var(--color-white);
+}
+
+.pdp-section2__lead {
+  margin: 0 0 46px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.16px;
+  color: #000;
+  opacity: 0.8;
+}
+
+.pdp-section2__panel[data-expanded="true"] {
+  /* Keep solid white in updated stacked layout (no frost overlay) */
+  background: var(--color-white);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.pdp-section2__panel[data-open-section="product-details"] {
+  max-height: none;
+}
+
+.pdp-section2__details-spacer {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.pdp-section2__details-spacer:not([data-open="true"]) {
+  height: 0;
+  max-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+.pdp-section2__body-inner--ghost,
+.pdp-section2__body[data-open="true"] .pdp-section2__body-inner--ghost {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.pdp-section2__item--product-details {
+  position: relative;
+}
+
+.pdp-section2__item--product-details[data-open="true"] {
+  /* Closed-row in-flow footprint — divider Y stays put (Figma 48px pitch) */
+  height: 48px;
+}
+
+.pdp-section2__item--product-details[data-open="true"] .pdp-section2__details-rise {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.pdp-section2__trigger:focus-visible,
+.pdp-info__link:focus-visible {
+  outline: 2px solid var(--color-black);
+  outline-offset: 2px;
+}
+
+.pdp-info__copy {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0.14px;
+  color: #000;
+  opacity: 0.8;
+}
+
+.pdp-info__block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 0 16px;
+}
+
+.pdp-info__block:last-of-type {
+  margin-bottom: 0;
+}
+
+.pdp-info__subtitle {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0.14px;
+  color: #000;
+  opacity: 0.8;
+}
+
+.pdp-info__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pdp-info__bullet {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.14px;
+  color: #000;
+  opacity: 0.8;
+}
+
+.pdp-info__bullet-icon {
+  display: block;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.pdp-info__style {
+  margin: 16px 0 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0.14px;
+  color: #000;
+  opacity: 0.8;
+}
+
+.pdp-info__link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: from-font;
+}
+
+/*
+ * Closed: content-sized panel — Description sits near the panel top (Figma).
+ * The old 94px pad was the image→row gap in document flow; as an overlay it
+ * created a tall empty white band over the shoe. Open keeps Figma 36px.
+ */
+.pdp-section2__accordion {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/*
+ * Desktop / fine pointer only — do not trap wheel/trackpad inside the panel.
+ * Mobile keeps overflow-y: auto + overscroll contain for internal panel scroll.
+ */
+@media (hover: hover) and (pointer: fine) {
+  .pdp-section2__accordion {
+    overflow-y: visible;
+    overscroll-behavior: auto;
+  }
+}
+
+/* 48px row pitch; Grey-20 divider between rows only (Figma 161:771) */
+.pdp-section2__item {
+  border-bottom: 1px solid var(--pdp-grey-20);
+}
+
+.pdp-section2__item:last-child {
+  border-bottom: 0;
+}
+
+.pdp-section2__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 48px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.16px;
+  color: var(--pdp-black);
+  cursor: pointer;
+  text-align: left;
+  /* Mobile: kill the default dark tap rectangle on accordion headers only */
+  -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+}
+
+.pdp-section2__trigger:active,
+.pdp-section2__trigger:focus:not(:focus-visible) {
+  background: transparent;
+  outline: none;
+}
+
+.pdp-section2__item[data-open="true"] .pdp-section2__trigger {
+  /* Open active label — Figma 148:1295 tracking 0.16; keep row height stable */
+  letter-spacing: 0.16px;
+}
+
+/* Figma IconPlusSmall 16×16 */
+.pdp-section2__plus {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  transition: transform var(--pdp-accordion-duration) var(--pdp-accordion-ease);
+  transform: rotate(0deg);
+}
+
+.pdp-section2__plus--close {
+  transform: rotate(45deg);
+}
+
+.pdp-section2__plus::before,
+.pdp-section2__plus::after {
+  content: "";
+  position: absolute;
+  background: var(--pdp-black);
+}
+
+.pdp-section2__plus::before {
+  left: 7.5px;
+  top: 2.5px;
+  width: 1px;
+  height: 11px;
+}
+
+.pdp-section2__plus::after {
+  left: 2.5px;
+  top: 7.5px;
+  width: 11px;
+  height: 1px;
+}
+
+/*
+ * Item body sits BELOW its trigger (Figma: title → content).
+ * Grid row animates 0fr → 1fr; panel height grows upward from bottom anchor.
+ */
+.pdp-section2__body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--pdp-accordion-duration)
+    var(--pdp-accordion-ease);
+}
+
+.pdp-section2__body[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+
+.pdp-section2__body-clip {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.pdp-section2__body-inner {
+  box-sizing: border-box;
+  /* Figma: 16px below label (401 − 385), 16px before next divider */
+  padding: 16px 0;
+  opacity: 0;
+  transition: opacity var(--pdp-accordion-duration) var(--pdp-accordion-ease);
+}
+
+.pdp-section2__body[data-open="true"] .pdp-section2__body-inner {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdp-section2__body,
+  .pdp-section2__body-inner,
+  .pdp-section2__accordion,
+  .pdp-section2__plus {
+    transition: none;
+  }
+}
+
+/*
+ * PDP Shop the Look — child stagger on reveal items.
+ * Section shell tokens/animation: src/styles/scrollReveal.css
+ */
+.pdp-stl {
+  --pdp-reveal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --pdp-reveal-duration: 700ms;
+  --pdp-reveal-y: 24px;
+  --pdp-reveal-stagger: 80ms;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  /* Figma 161:404 — 8px side inset, 44px top before image */
+  padding: 44px 8px 44px;
+  box-sizing: border-box;
+  background: var(--color-white);
+}
+
+.pdp-stl[data-pdp-reveal="pending"] .pdp-reveal-item,
+.pdp-stl[data-pdp-reveal="pending"] .pdp-stl__shot {
+  opacity: 0;
+  transform: translateY(var(--pdp-reveal-y));
+  transition: none;
+}
+
+.pdp-stl[data-pdp-reveal="in"] .pdp-reveal-item,
+.pdp-stl[data-pdp-reveal="in"] .pdp-stl__shot {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--pdp-reveal-duration) var(--pdp-reveal-ease),
+    transform var(--pdp-reveal-duration) var(--pdp-reveal-ease);
+}
+
+.pdp-stl[data-pdp-reveal="in"] .pdp-reveal-item:nth-child(2),
+.pdp-stl[data-pdp-reveal="in"] .pdp-stl__shot:nth-child(2) {
+  transition-delay: var(--pdp-reveal-stagger);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdp-stl[data-pdp-reveal] .pdp-reveal-item,
+  .pdp-stl[data-pdp-reveal] .pdp-stl__shot {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+.pdp-stl__shot {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--pdp-grey);
+}
+
+.pdp-stl__shot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pdp-stl__shot--tall {
+  aspect-ratio: 386 / 580;
+}
+
+.pdp-stl__shot--wide {
+  display: none; /* removed in Updated PDP Figma 161:404 */
+}
+
+.pdp-stl__add {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(50px);
+}
+
+.pdp-stl__plus {
+  position: relative;
+  width: 13px;
+  height: 13px;
+}
+
+.pdp-stl__plus::before,
+.pdp-stl__plus::after {
+  content: "";
+  position: absolute;
+  background: var(--color-white);
+}
+
+.pdp-stl__plus::before {
+  left: 6px;
+  top: 0;
+  width: 1px;
+  height: 13px;
+}
+
+.pdp-stl__plus::after {
+  left: 0;
+  top: 6px;
+  width: 13px;
+  height: 1px;
+}
+
+/* —— Define your style — Updated PDP Figma 161:409 —— */
+.pdp-style {
+  padding: 44px 8px 44px;
+  box-sizing: border-box;
+}
+
+.pdp-style__title {
+  margin: 0 0 8px;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.16px;
+  color: var(--color-black);
+}
+
+.pdp-style__media {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  aspect-ratio: 386 / 480;
+  overflow: hidden;
+  background: var(--pdp-grey);
+}
+
+.pdp-style__media .pdp-style__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Same bottom-right control chrome as Shop the Look "+" (.pdp-stl__add) */
+.pdp-style__playback {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 35px;
+  height: 35px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: block;
+  background: rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(50px);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.pdp-style__playback:focus-visible {
+  outline: 2px solid var(--color-white);
+  outline-offset: -2px;
+}
+
+.pdp-style__playback-icon {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 35px;
+  height: 35px;
+  max-width: none;
+  opacity: 0;
+  transition: opacity 150ms ease;
+  pointer-events: none;
+}
+
+.pdp-style__playback-icon[data-active="true"] {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdp-style__playback-icon {
+    transition: none;
+  }
+}
+
+.pdp-style__text {
+  padding: 24px 8px 0;
+  box-sizing: border-box;
+}
+
+.pdp-style__copy {
+  margin: 0;
+  max-width: none;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--pdp-black);
+}
+
+.pdp-style__link {
+  display: inline-block;
+  margin-top: 36px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.14px;
+  color: var(--pdp-black);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/*
+ * Compare — Updated PDP Figma 161:794 (402×860).
+ * Title y88 → filters → columns y277 (167 + 20 gap + 183 dashed) → specs; pad-b 88.
+ */
+.pdp-compare {
+  padding: 88px 16px 88px;
+  box-sizing: border-box;
+  background: var(--pdp-grey);
+}
+
+.pdp-compare__title {
+  margin: 0 0 25px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.16px;
+  color: #000;
+}
+
+.pdp-compare__filters {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* Second select bottom 253 → columns top 277 */
+  margin-bottom: 24px;
+}
+
+.pdp-compare__filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.pdp-compare__filter-label {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.14px;
+  color: var(--pdp-black);
+  max-width: 142px;
+}
+
+.pdp-compare__filter-label--wrap {
+  max-width: 138px;
+}
+
+.pdp-compare__select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 167px;
+  flex-shrink: 0;
+  height: 52px;
+  padding: 0 16px;
+  box-sizing: border-box;
+  background: #fdfdfd;
+  border: 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--pdp-black);
+}
+
+.pdp-compare__select-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 13.057px;
+  height: 13.057px;
+  flex-shrink: 0;
+}
+
+.pdp-compare__select-icon img {
+  display: block;
+  width: 9.232px;
+  height: 9.232px;
+  transform: rotate(-45deg);
+}
+
+.pdp-compare__chevron {
+  display: block;
+  width: 13.057px;
+  height: 13.057px;
+  flex-shrink: 0;
+}
+
+.pdp-compare__columns {
+  display: grid;
+  /* 16 + 167 + 20 + 183 + 16 = 402 */
+  grid-template-columns: minmax(0, 167fr) minmax(0, 183fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.pdp-compare__col--filled {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.pdp-compare__col--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  /* Figma 183×495 dashed empty state */
+  min-height: 495px;
+  border: 1px dashed var(--pdp-grey-20);
+}
+
+.pdp-compare__empty-label {
+  margin: 0;
+  max-width: 112px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--pdp-black);
+  text-align: center;
+}
+
+.pdp-compare__model-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* Rule y277 → name y294 */
+  margin: 17px 0 0;
+  padding: 0 0 0 16px;
+  box-sizing: border-box;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  color: var(--pdp-black);
+}
+
+.pdp-compare__rule {
+  width: 100%;
+  height: 1px;
+  background: #d1d1d1;
+  border: 0;
+}
+
+.pdp-compare__thumb {
+  position: relative;
+  /* Name bottom ~310 → image y331 */
+  width: 80px;
+  height: 80px;
+  margin: 21px 0 6px 16px;
+  overflow: hidden;
+}
+
+.pdp-compare__thumb-img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pdp-compare__thumb-img--overlay {
+  pointer-events: none;
+}
+
+.pdp-compare__specs {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  /* Rule y417 → specs y442 */
+  margin-top: 24px;
+  padding-left: 0;
+}
+
+.pdp-compare__spec {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pdp-compare__spec-label {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  color: var(--pdp-grey-40);
+}
+
+.pdp-compare__spec-value {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  color: var(--pdp-black);
+}
+
+/* —— Ellipse-Editor's Pick — Updated PDP Figma 161:754 (402×772) ——
+ * Hero 33,68 338×338; title overlay at y88; thumbs 110 @ y386/505 gap 20×9;
+ * CTA y664; section ends y772.
+ */
+.pdp-editors {
+  position: relative;
+  padding: 0 0 88px;
+  box-sizing: border-box;
+  background: var(--color-white);
+  overflow: hidden;
+}
+
+.pdp-editors__hero {
+  position: relative;
+  /* (402 − 338) / 2 = 32px sides — Figma uses 33 left; center is equivalent */
+  width: calc(338 / 402 * 100%);
+  max-width: 338px;
+  margin: 68px auto 0;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: transparent;
+}
+
+.pdp-editors__hero img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.pdp-editors__title {
+  position: absolute;
+  left: 50%;
+  /* Figma title top 88 − hero top 68 = 20px into the hero */
+  top: 20px;
+  transform: translateX(-50%);
+  margin: 0;
+  width: min(265px, 100%);
+  font-family: var(--font-display);
+  font-weight: var(--font-display-weight, 300);
+  font-size: 28px;
+  line-height: 32px;
+  letter-spacing: 0.28px;
+  color: var(--pdp-black);
+  text-align: center;
+  pointer-events: none;
+}
+
+.pdp-editors__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* Figma: 20px column gap, 9px row gap */
+  column-gap: 20px;
+  row-gap: 9px;
+  list-style: none;
+  /* Grid top 386 vs hero bottom 406 → pull up 20px */
+  margin: -20px 16px 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.pdp-editors__thumb {
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: transparent;
+}
+
+.pdp-editors__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.pdp-editors__link {
+  display: block;
+  /* CTA y664 − grid bottom (505+110=615) = 49px */
+  margin-top: 49px;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.28px;
+  color: var(--pdp-black);
+  text-decoration: underline;
+  text-decoration-thickness: from-font;
+  text-underline-offset: 3px;
+}
+
+/* —— Product pairings 108:649 —— */
+.pdp-pairings {
+  padding: 88px var(--pdp-gutter) 72px;
+  box-sizing: border-box;
+}
+
+.pdp-pairings__title {
+  margin: 0 0 20px;
+  padding: 0 16px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.16px;
+  color: var(--pdp-black);
+}
+
+.pdp-pairings__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pdp-pairings__card {
+  position: relative;
+  aspect-ratio: 168 / 228;
+  background: rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.pdp-pairings__card img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 78%;
+  height: auto;
+  max-height: 78%;
+  object-fit: contain;
+  display: block;
+}
+
+.pdp-pairings__plus {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 9px;
+  height: 9px;
+}
+
+.pdp-pairings__plus::before,
+.pdp-pairings__plus::after {
+  content: "";
+  position: absolute;
+  background: var(--pdp-grey-20);
+}
+
+.pdp-pairings__plus::before {
+  left: 4px;
+  top: 0;
+  width: 1px;
+  height: 9px;
+}
+
+.pdp-pairings__plus::after {
+  left: 0;
+  top: 4px;
+  width: 9px;
+  height: 1px;
+}
+
+.pdp-pairings__indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 1px;
+  margin: 20px 16px 0;
+}
+
+.pdp-pairings__indicator-active {
+  width: 25px;
+  height: 1px;
+  background: var(--pdp-black);
+  mix-blend-mode: multiply;
+}
+
+.pdp-pairings__indicator-rest {
+  width: 45px;
+  height: 1px;
+  background: var(--pdp-black);
+  opacity: 0.2;
+  mix-blend-mode: multiply;
+}
+
+/* —— Review — Updated PDP Figma 161:503 (static) —— */
+.pdp-review {
+  padding: 56px 16px 80px;
+  box-sizing: border-box;
+  background: var(--color-white);
+  color: var(--pdp-black);
+}
+
+.pdp-review__title {
+  margin: 0 0 40px;
+  font-family: var(--font-display);
+  font-weight: var(--font-display-weight, 300);
+  font-size: 19px;
+  line-height: 19px;
+  letter-spacing: 0.19px;
+}
+
+.pdp-review__subtitle {
+  margin: 0 0 12px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.16px;
+}
+
+.pdp-review__hint,
+.pdp-review__note,
+.pdp-review__date,
+.pdp-review__verified,
+.pdp-review__count,
+.pdp-review__page,
+.pdp-review__attrs {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 12px;
+  letter-spacing: 0.12px;
+  color: var(--pdp-grey-50);
+}
+
+.pdp-review__snapshot,
+.pdp-review__overall,
+.pdp-review__rate,
+.pdp-review__averages,
+.pdp-review__media {
+  margin-bottom: 40px;
+}
+
+.pdp-review__bars {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pdp-review__bar-row,
+.pdp-review__metric {
+  display: grid;
+  grid-template-columns: 52px 1fr 28px;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.pdp-review__bar-track,
+.pdp-review__metric-track {
+  position: relative;
+  height: 4px;
+  background: var(--pdp-grey-12);
+  overflow: hidden;
+}
+
+.pdp-review__bar-fill,
+.pdp-review__metric-fill {
+  display: block;
+  height: 100%;
+  background: var(--pdp-black);
+}
+
+.pdp-review__bar-count,
+.pdp-review__metric > span:last-child {
+  text-align: right;
+}
+
+.pdp-review__overall-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.pdp-review__overall-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.pdp-review__overall-score {
+  text-align: right;
+}
+
+.pdp-review__score {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 32px;
+  line-height: 32px;
+}
+
+.pdp-review__stars {
+  margin: 4px 0;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.pdp-review__rate-stars {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.pdp-review__rate-star {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: var(--pdp-grey);
+  font-size: 20px;
+}
+
+.pdp-review__fit {
+  margin-top: 20px;
+}
+
+.pdp-review__fit-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.pdp-review__fit-track {
+  position: relative;
+  height: 4px;
+  background: var(--pdp-grey-12);
+}
+
+.pdp-review__fit-knob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pdp-black);
+  transform: translate(-50%, -50%);
+}
+
+.pdp-review__tabs {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.pdp-review__tab {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 12px;
+  color: var(--pdp-grey-50);
+  cursor: pointer;
+}
+
+.pdp-review__tab[data-active="true"] {
+  color: var(--pdp-black);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.pdp-review__card {
+  padding: 16px;
+  margin-bottom: 24px;
+  border: 1px solid var(--pdp-grey-12);
+  box-sizing: border-box;
+}
+
+.pdp-review__card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.pdp-review__author,
+.pdp-review__card-title {
+  margin: 0 0 8px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.pdp-review__card-body {
+  margin: 0 0 12px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.14px;
+}
+
+.pdp-review__link,
+.pdp-review__load-more,
+.pdp-review__filter-btn {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--pdp-black);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.pdp-review__helpful {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--pdp-grey-50);
+}
+
+.pdp-review__filter-chip {
+  padding: 6px 10px;
+  border: 1px solid var(--pdp-grey-20);
+  color: var(--pdp-black);
+}
+
+.pdp-review__media-row {
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+  margin: 16px 0 12px;
+  scrollbar-width: none;
+}
+
+.pdp-review__media-row::-webkit-scrollbar {
+  display: none;
+}
+
+.pdp-review__media-tile {
+  flex: 0 0 104px;
+  width: 104px;
+  height: 104px;
+  overflow: hidden;
+  background: var(--pdp-grey);
+}
+
+.pdp-review__media-tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pdp-review__media-indicator {
+  display: flex;
+  gap: 4px;
+  height: 1px;
+  margin-bottom: 24px;
+}
+
+.pdp-review__media-dot {
+  width: 45px;
+  height: 1px;
+  background: var(--pdp-black);
+  opacity: 0.1;
+}
+
+.pdp-review__media-dot--on {
+  width: 25px;
+  opacity: 1;
+}
+
+.pdp-review__search {
+  display: block;
+  margin-bottom: 12px;
+}
+
+.pdp-review__search input {
+  width: 100%;
+  height: 38px;
+  padding: 0 14px;
+  border: 1px solid var(--pdp-grey-20);
+  box-sizing: border-box;
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+.pdp-review__filter-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 38px;
+  border: 1px solid var(--pdp-grey-20);
+  text-decoration: none;
+}
+
+.pdp-review__page {
+  margin: 24px 0 16px;
+}
+
+.pdp-review__card-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 12px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--pdp-grey-50);
+}
+
+.pdp-review__card-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+  font-family: var(--font-body);
+  font-size: 12px;
+}
+
+.pdp-review__load-more {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.pdp-review .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

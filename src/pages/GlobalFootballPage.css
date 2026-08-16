@@ -1,0 +1,786 @@
+/* Global Football — Figma 91:3894 (static)
+   Section heights / gaps measured independently from parent-frame y positions. */
+
+.gf {
+  --gf-bg: #fcfcfc;
+  --gf-grey: #f7f7f7;
+  --gf-grey-40: #999999;
+  --gf-view: #606060;
+  --gf-intl-bg: #efefef;
+
+  width: 100%;
+  min-height: 100%;
+  background: var(--gf-bg);
+  color: var(--color-black);
+}
+
+.gf img {
+  max-width: none;
+}
+
+.gf__main {
+  padding-top: calc(var(--promo-bar-height) + var(--nav-height));
+  width: 100%;
+  background: var(--gf-bg);
+  overflow: visible;
+}
+
+/* —— Product card — Figma 91:3967 / 91:3920
+   Frame 199×250 #f7f7f7 → image 163×163 @ (19,44) → plus → Text
+   No nested image container / image background. —— */
+.gf-card {
+  width: 100%;
+  max-width: 199px;
+}
+
+.gf-card__tile {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 199 / 250;
+  background: #f7f7f7;
+  overflow: hidden;
+}
+
+/* Flattened Figma image-frame export (shadows / effects baked in) */
+.gf-card__img {
+  position: absolute;
+  left: 9.547738693%; /* 19 / 199 */
+  top: 17.6%; /* 44 / 250 */
+  width: 81.899165628%; /* 162.979 / 199 */
+  aspect-ratio: 1;
+  height: auto;
+  max-width: none;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.gf-card__plus {
+  position: absolute;
+  right: 16px; /* 199 − 174 − 9 */
+  bottom: 12px; /* 250 − 229 − 9 */
+  z-index: 2;
+  display: block;
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.gf-card__plus-mark {
+  position: relative;
+  display: block;
+  width: 9px;
+  height: 9px;
+}
+
+.gf-card__plus-mark::before,
+.gf-card__plus-mark::after {
+  content: "";
+  position: absolute;
+  background: var(--gf-grey-40);
+}
+
+.gf-card__plus-mark::before {
+  left: 4px;
+  top: 0;
+  width: 1px;
+  height: 9px;
+}
+
+.gf-card__plus-mark::after {
+  left: 0;
+  top: 4px;
+  width: 9px;
+  height: 1px;
+}
+
+/* Text starts 8px below the 250px frame (Card h=310) */
+.gf-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 52px;
+  padding: 8px 16px 0;
+  box-sizing: border-box;
+}
+
+.gf-card__name,
+.gf-card__price {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  color: var(--color-grey-80);
+}
+
+.gf-card__desc {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.12px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* —— 1. Hero 91:3914 (h=782) —— */
+.gf-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 782px;
+  padding: 40px 8px 0;
+  box-sizing: border-box;
+  background: var(--gf-bg);
+}
+
+.gf-hero__label {
+  margin: 0 0 12px;
+  width: min(275px, 100%);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: center;
+  color: var(--color-black);
+}
+
+.gf-hero__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 386 / 550;
+  overflow: hidden;
+  background: #e8e8e8;
+}
+
+.gf-hero__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.gf-hero__title {
+  margin: 40px 0 88px; /* image ends ~622; title y662 → ~40; section h 782 */
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: var(--font-display-weight);
+  font-synthesis: none;
+  line-height: 32px;
+  letter-spacing: 0.28px;
+  text-align: center;
+  color: var(--color-black);
+}
+
+/* —— 2. Filter & Sort (y804 after hero 782 → mt 22) —— */
+.gf-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: calc(100% - 64px);
+  max-width: 338px;
+  margin: 22px auto 0;
+  min-height: 16px;
+}
+
+.gf-toolbar__label {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.13px;
+  color: var(--color-black);
+}
+
+.gf-toolbar__views {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 38px;
+}
+
+.gf-view {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  border: 1px solid rgba(96, 96, 96, 0.3);
+  border-radius: 0.684px;
+  box-sizing: border-box;
+}
+
+.gf-view[data-active="true"] {
+  border-color: var(--gf-view);
+}
+
+.gf-view--2::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 0;
+  width: 1px;
+  height: 11px;
+  background: var(--gf-view);
+  border: 1px solid var(--gf-view);
+  box-sizing: border-box;
+}
+
+.gf-view--3::before,
+.gf-view--3::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: 11px;
+  background: rgba(96, 96, 96, 0.3);
+  border: 1px solid rgba(96, 96, 96, 0.3);
+  box-sizing: border-box;
+}
+
+.gf-view--3::before {
+  left: 3px;
+}
+
+.gf-view--3::after {
+  left: 7px;
+}
+
+/* —— 3–5. Cleat sections —— */
+.gf-cleats {
+  width: 100%;
+  background: var(--gf-bg);
+  box-sizing: border-box;
+}
+
+.gf-cleats--firm {
+  min-height: 1208px;
+  margin-top: 7px; /* filter ends ~820; firm y827 */
+  padding-top: 1px;
+}
+
+.gf-cleats--indoor {
+  min-height: 873px;
+  margin-top: 72px; /* firm ends 2035; indoor y2107 */
+}
+
+.gf-cleats--turf {
+  min-height: 873px;
+}
+
+.gf-cleats__rule {
+  width: calc(100% - 16px);
+  max-width: 386px;
+  height: 1px;
+  margin: 0 auto;
+  background: #d8d8d8;
+}
+
+.gf-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: 24px 0 0;
+  padding: 0 31px;
+  box-sizing: border-box;
+}
+
+.gf-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.gf-tabs__item {
+  flex: 0 0 auto;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: var(--gf-grey-40);
+  white-space: nowrap;
+}
+
+.gf-tabs__item--active {
+  color: var(--color-black);
+}
+
+.gf-cleats__hero {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  margin-top: 32px; /* firm: tabs ~41 → hero 73 ≈ 32 */
+  overflow: hidden;
+  background: #e8e8e8;
+}
+
+.gf-cleats--indoor .gf-cleats__hero,
+.gf-cleats--turf .gf-cleats__hero {
+  margin-top: 0;
+}
+
+.gf-cleats__hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.gf-cleats__title {
+  margin: 48px 0 0; /* firm: hero ends 475; title 523 → 48 */
+  padding: 0 32px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.16px;
+  color: var(--color-black);
+}
+
+.gf-cleats--indoor .gf-cleats__title,
+.gf-cleats--turf .gf-cleats__title {
+  margin-top: 48px; /* hero 402 → title 450 */
+}
+
+.gf-cleats__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 4px;
+  row-gap: 24px; /* firm row2 at 898; row1 meta ends ~874 → ~24 */
+  margin-top: 22px; /* title 523+19 → cards 564 ≈ 22 */
+  padding-bottom: 0;
+}
+
+.gf-cleats--indoor .gf-cleats__grid,
+.gf-cleats--turf .gf-cleats__grid {
+  margin-top: 22px; /* title 450+19 → cards 491 */
+}
+
+.gf-cleats__grid--one {
+  grid-template-columns: 1fr 1fr;
+}
+
+.gf-cleats__grid--one .gf-card:only-child {
+  grid-column: 1;
+}
+
+/* —— 6. SI Collection 91:4004 —— */
+.gf-si {
+  width: 100%;
+  min-height: 1533px;
+  background: var(--gf-bg);
+}
+
+.gf-si__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 24px 0;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.gf-si__media {
+  position: relative;
+  width: min(256px, 63.68vw);
+  aspect-ratio: 256 / 400;
+  overflow: hidden;
+  background: #e8e8e8;
+}
+
+.gf-si__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.gf-si__title {
+  margin: 40px 0 0;
+  width: min(354px, 100%);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.16px;
+  color: var(--color-black);
+}
+
+.gf-si__body {
+  margin: 31px 0 0; /* title 480 → body 530 */
+  width: min(354px, 100%);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.24px;
+  color: var(--color-black);
+}
+
+.gf-si__cta {
+  margin: 36px 0 56px; /* body 530 → cta 586; layering at 659 */
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.28px;
+  color: var(--color-black);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: from-font;
+}
+
+.gf-layer {
+  position: relative;
+  width: 100%;
+  min-height: 874px;
+  overflow: hidden;
+  background: #111;
+}
+
+.gf-layer__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.gf-layer__vert {
+  position: absolute;
+  left: 8px;
+  top: 200px;
+  margin: 0;
+  width: 20px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #e8e8e8;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+
+.gf-layer__product {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(258px, 64.18vw);
+  aspect-ratio: 258 / 373;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  background: #d9d9d9;
+}
+
+.gf-layer__product-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.gf-layer__plus {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background: rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(37.5px);
+  -webkit-backdrop-filter: blur(37.5px);
+}
+
+.gf-layer__plus-mark {
+  position: relative;
+  width: 13px;
+  height: 13px;
+}
+
+.gf-layer__plus-mark::before,
+.gf-layer__plus-mark::after {
+  content: "";
+  position: absolute;
+  background: var(--color-white);
+}
+
+.gf-layer__plus-mark::before {
+  left: 6px;
+  top: 0;
+  width: 1px;
+  height: 13px;
+}
+
+.gf-layer__plus-mark::after {
+  left: 0;
+  top: 6px;
+  width: 13px;
+  height: 1px;
+}
+
+/* —— 7. International Collection 91:4018 —— */
+.gf-intl {
+  width: 100%;
+  min-height: 1082px;
+  background: var(--gf-intl-bg);
+}
+
+.gf-intl__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 699px;
+  padding: 72px 24px 0;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.gf-intl__media {
+  position: relative;
+  width: min(256px, 63.68vw);
+  aspect-ratio: 256 / 400;
+  overflow: hidden;
+  background: #e8e8e8;
+}
+
+.gf-intl__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.gf-intl__title {
+  margin: 40px 0 0;
+  width: min(354px, 100%);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.16px;
+  color: var(--color-black);
+}
+
+.gf-intl__body {
+  margin: 31px 0 0;
+  width: min(354px, 100%);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.24px;
+  color: var(--color-black);
+}
+
+.gf-intl__cta {
+  margin: 36px 0 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.28px;
+  color: var(--color-black);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: from-font;
+}
+
+.gf-apparel {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 32px; /* intro 699 → apparel 731 */
+  padding-bottom: 88px;
+}
+
+.gf-apparel__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 402 / 199;
+  overflow: hidden;
+  background: #e8e8e8;
+}
+
+.gf-apparel__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left center;
+}
+
+.gf-apparel__indicator {
+  position: relative;
+  width: calc(100% - 40px);
+  max-width: 362px;
+  height: 1px;
+  margin: 64px auto 0;
+}
+
+.gf-apparel__track {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: rgba(21, 20, 21, 0.15);
+}
+
+.gf-apparel__thumb {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 78px;
+  height: 1px;
+  background: var(--color-black);
+}
+
+/* —— 8. Featured athletes 91:4035 —— */
+.gf-athletes {
+  width: 100%;
+  min-height: 810px;
+  padding: 88px 0 45px;
+  box-sizing: border-box;
+  background: var(--color-white);
+}
+
+.gf-athletes__title {
+  margin: 0 0 24px;
+  padding: 0 32px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 32px;
+  letter-spacing: 0.16px;
+  color: var(--color-black);
+}
+
+.gf-athletes__track {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.gf-athletes__card {
+  flex: 0 0 calc(100% - 16px);
+}
+
+.gf-athletes__card--peek {
+  flex: 0 0 12px;
+}
+
+.gf-athletes__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 386 / 524;
+  overflow: hidden;
+  background: #e5e5e5;
+}
+
+.gf-athletes__card--peek .gf-athletes__media {
+  aspect-ratio: 12 / 524;
+}
+
+.gf-athletes__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left center;
+}
+
+.gf-athletes__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  width: calc(100% - 64px);
+  max-width: 338px;
+  margin: 20px 0 0;
+  padding: 0 32px;
+  box-sizing: border-box;
+}
+
+.gf-athletes__name {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.16px;
+  color: var(--color-grey-80);
+}
+
+.gf-athletes__progress {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 1px;
+}
+
+.gf-athletes__bar {
+  display: block;
+  height: 1px;
+  width: 45px;
+  background: var(--color-black);
+  opacity: 0.2;
+  mix-blend-mode: multiply;
+}
+
+.gf-athletes__bar--active {
+  width: 25px;
+  opacity: 1;
+}
+
+/* —— 9. Team 91:4056 —— */
+.gf-team {
+  width: 100%;
+  min-height: 514px;
+  padding: 40px 8px 88px;
+  box-sizing: border-box;
+  background: var(--color-white);
+}
+
+.gf-team__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  width: 100%;
+  max-width: 386px;
+  margin: 0 auto;
+}
+
+.gf-team__cell {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--gf-grey);
+}
+
+.gf-team__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
