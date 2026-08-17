@@ -34,7 +34,7 @@ export default function PdpEditorsPicks({
         ))}
       </ul>
       <a className="pdp-editors__link" href="#lifestyle-shoes">
-        Shop all lifestyle shoes
+        Shop lifestyle shoes
       </a>
     </section>
   );

@@ -137,7 +137,7 @@ export default function PdpDefineYourStyle({
           built for lifestyle
         </p>
         <a className="pdp-style__link" href="#lifestyle">
-          Explore all lifestyle
+          Explore lifestyle
         </a>
       </div>
     </section>
