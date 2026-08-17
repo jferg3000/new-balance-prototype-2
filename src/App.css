@@ -319,28 +319,34 @@ html:has(.page[data-state="ready"]) body {
 .nav__menu {
   justify-self: start;
   width: 22px;
-  height: 9.25px;
+  height: 10px;
   display: flex;
   align-items: center;
+  overflow: visible;
   color: inherit;
 }
 
+.nav__menu-icon,
 .nav__menu svg {
   display: block;
   width: 22px;
-  height: 9.25px;
+  height: 10px;
+  max-width: none;
 }
 
 .nav__logo {
-  width: 38px;
-  height: 18px;
+  width: 44px;
+  height: 21px;
   color: inherit;
 }
 
+.nav__logo-icon,
 .nav__logo svg {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 44px;
+  height: 21px;
+  max-width: none;
+  object-fit: contain;
 }
 
 .nav__actions {
@@ -364,10 +370,10 @@ html:has(.page[data-state="ready"]) body {
   display: block;
 }
 
-/* Figma 158:316 — bag vector sits in a 16.5 frame inside the 20×20 hit target */
+/* motion-study-1 — bag 16×16 inside the 20×20 hit target */
 .nav__actions .nav__icon-bag {
-  width: 16.5px;
-  height: 16.5px;
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
 }
 
