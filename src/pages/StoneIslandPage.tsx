@@ -155,6 +155,7 @@ export default function StoneIslandPage() {
             <AutoPlayMutedVideo
               className="si-hero__img"
               src={assets.hero}
+              poster="/assets/stone/hero.jpg"
             />
             <PauseMark />
           </div>

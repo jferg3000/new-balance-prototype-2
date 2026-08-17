@@ -18,6 +18,7 @@ export default function DesktopPreviewHost() {
         className="desktop-preview-host__frame"
         title="New Balance mobile preview"
         src={src}
+        allow="autoplay; fullscreen"
       />
     </div>
   );

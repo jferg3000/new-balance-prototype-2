@@ -3,6 +3,8 @@ import { useEffect, useRef } from "react";
 type Props = {
   src: string;
   className?: string;
+  /** Shown before the first decoded frame (and if autoplay is blocked). */
+  poster?: string;
 };
 
 /**
@@ -10,7 +12,7 @@ type Props = {
  * Relies on muted + playsInline, then force-plays when the host card
  * is on screen and again after the first user gesture (stack swipe).
  */
-export function AutoPlayMutedVideo({ src, className }: Props) {
+export function AutoPlayMutedVideo({ src, className, poster }: Props) {
   const ref = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -93,6 +95,7 @@ export function AutoPlayMutedVideo({ src, className }: Props) {
       ref={ref}
       className={className}
       src={src}
+      poster={poster}
       autoPlay
       muted
       loop

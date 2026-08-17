@@ -259,6 +259,7 @@ export default function HomePage() {
                 <AutoPlayMutedVideo
                   className="section__photo"
                   src={assets.utility}
+                  poster="/assets/stone/hero.jpg"
                 />
               </div>
               <div className="section__copy section__copy--light section__copy--hero">

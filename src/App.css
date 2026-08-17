@@ -459,6 +459,9 @@ html:has(.page[data-state="ready"]) body {
 .section__media--bleed video {
   object-position: center;
   display: block;
+  /* Keep a compositor layer so the reel paints inside GSAP's 3D card transforms */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .section--hero {
