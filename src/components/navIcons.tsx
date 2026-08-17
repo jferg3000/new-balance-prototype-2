@@ -1,6 +1,6 @@
 /**
- * Main-nav glyphs — exact Global/ assets from prototype-1 motion-study-1.
- * Menu is 22×8 (black) / 22×10 (white), drawn at 22×10 like Nav.tsx.
+ * Main-nav glyphs. Menu uses the dropped motion-study-3 asset
+ * `public/assets/Menu Black.svg` at native 22×8.
  */
 
 export type NavIconTone = "black" | "white";
@@ -16,11 +16,11 @@ export function IconMenu({ tone = "black" }: ToneProps) {
       src={
         tone === "white"
           ? "/assets/nav/menu-white.svg"
-          : "/assets/nav/menu-black.svg"
+          : "/assets/Menu Black.svg"
       }
       alt=""
       width={22}
-      height={10}
+      height={8}
       draggable={false}
       aria-hidden="true"
     />

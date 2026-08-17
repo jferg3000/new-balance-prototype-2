@@ -319,7 +319,7 @@ html:has(.page[data-state="ready"]) body {
 .nav__menu {
   justify-self: start;
   width: 22px;
-  height: 10px;
+  height: 8px;
   display: flex;
   align-items: center;
   overflow: visible;
@@ -330,8 +330,9 @@ html:has(.page[data-state="ready"]) body {
 .nav__menu svg {
   display: block;
   width: 22px;
-  height: 10px;
+  height: 8px;
   max-width: none;
+  object-fit: contain;
 }
 
 .nav__logo {
