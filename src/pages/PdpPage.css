@@ -611,9 +611,8 @@
 }
 
 /*
- * Section 2 — Updated PDP Figma 161:771 (9061, 402×716).
- * Image 8,8 386×298.37 → gap ~17px → panel y323 h382 (pad 44/16/52).
- * Lead → 46px → accordion rows @ 48px pitch, Grey-20 dividers.
+ * Section 2 — campaign image + Gabby-Details 08/13 spacing (motion-study-1):
+ * panel pt 40 / inset 16 / desc→rows 16 / row 72 / pb 24.
  */
 .pdp-section2 {
   --pdp-accordion-ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -649,13 +648,12 @@
   flex-direction: column;
   width: 100%;
   box-sizing: border-box;
-  /* Content block 44→330 within 382 panel → 52px bottom */
-  padding: 44px 16px 52px;
+  padding: 40px 16px 24px;
   background: var(--color-white);
 }
 
 .pdp-section2__lead {
-  margin: 0 0 46px;
+  margin: 0 0 16px;
   font-family: var(--font-body);
   font-size: 16px;
   font-weight: 400;
@@ -703,8 +701,8 @@
 }
 
 .pdp-section2__item--product-details[data-open="true"] {
-  /* Closed-row in-flow footprint — divider Y stays put (Figma 48px pitch) */
-  height: 48px;
+  /* Closed-row in-flow footprint — divider Y stays put (72px row) */
+  height: 72px;
 }
 
 .pdp-section2__item--product-details[data-open="true"] .pdp-section2__details-rise {
@@ -833,7 +831,7 @@
   }
 }
 
-/* 48px row pitch; Grey-20 divider between rows only (Figma 161:771) */
+/* 72px row pitch; Grey-20 divider between rows only */
 .pdp-section2__item {
   border-bottom: 1px solid var(--pdp-grey-20);
 }
@@ -847,7 +845,8 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  min-height: 48px;
+  height: 72px;
+  min-height: 72px;
   margin: 0;
   padding: 0;
   border: 0;
