@@ -6,12 +6,27 @@ const assets = {
   brandWarrior: "/assets/brand-warrior.svg",
   brandTeamSports: "/assets/brand-team-sports.svg",
   arrow: "/assets/icon-arrow.svg",
+  plus: "/assets/icon-plus-small.svg",
 };
 
+const LINK_SECTIONS = ["Help", "Shop", "About us", "For you"] as const;
+
+const SOCIAL_LEFT = ["Instagram", "Facebook", "X"] as const;
+const SOCIAL_RIGHT = ["YouTube", "Pinterest", "TikTok"] as const;
+
+const LEGAL_LINKS = [
+  "Privacy Policy",
+  "Responsible Disclosure",
+  "Website Terms & Conditions",
+  "CA Supply Chains Act (SB 657) and Modern Slavery Act Statement",
+  "Health Data Privacy Policy",
+  "Do Not Sell or Share My Personal Information",
+] as const;
+
 /**
- * Global Footer — source of truth from Figma 141:1339.
- * AppLayout: document-flow after page content on non-Homepage routes.
- * Homepage: document-flow below the stacked cards inside HomePage.
+ * Global Footer — exact Footer 08/13 from new-balance-prototype-1
+ * (`motion-study-1`, Figma 16017:417).
+ * Keeps `data-global-footer` / `data-nav-color` for this prototype's chrome.
  */
 export function Footer() {
   return (
@@ -19,72 +34,81 @@ export function Footer() {
       className="footer"
       data-global-footer
       data-nav-color="black"
-      data-node-id="141:1339"
+      data-node-id="16017:417"
     >
       <div className="footer__signup">
         <p>Sign up to be the first to know about new arrivals</p>
-        <button type="button" aria-label="Sign up">
+        <span className="footer__signup-icon" aria-hidden>
           <img src={assets.arrow} alt="" width={24} height={24} />
-        </button>
+        </span>
       </div>
       <div className="footer__rule footer__rule--signup" />
 
       <nav className="footer__nav" aria-label="Footer">
-        <button type="button" className="footer__row footer__row--first">
-          Help
-        </button>
-        <div className="footer__rule" />
-        <button type="button" className="footer__row">
-          Shop
-        </button>
-        <div className="footer__rule" />
-        <button type="button" className="footer__row">
-          About us
-        </button>
-        <div className="footer__rule" />
-        <button type="button" className="footer__row">
-          For you
-        </button>
-        <div className="footer__rule" />
+        {LINK_SECTIONS.map((label, index) => (
+          <div
+            key={label}
+            className={
+              index === 0 ? "footer__section" : "footer__section footer__section--spaced"
+            }
+          >
+            <div className="footer__row">
+              <p>{label}</p>
+              <span className="footer__plus" aria-hidden>
+                <img src={assets.plus} alt="" width={16} height={16} />
+              </span>
+            </div>
+            <div className="footer__rule" />
+          </div>
+        ))}
       </nav>
 
       <div className="footer__social">
-        <div>
-          <a href="#instagram">Instagram</a>
-          <a href="#facebook">Facebook</a>
-          <a href="#x">X</a>
-        </div>
-        <div>
-          <a href="#youtube">YouTube</a>
-          <a href="#pinterest">Pinterest</a>
-          <a href="#tiktok">TikTok</a>
-        </div>
+        <ul>
+          {SOCIAL_LEFT.map((label) => (
+            <li key={label}>
+              <a href="#">{label}</a>
+            </li>
+          ))}
+        </ul>
+        <ul>
+          {SOCIAL_RIGHT.map((label) => (
+            <li key={label}>
+              <a href="#">{label}</a>
+            </li>
+          ))}
+        </ul>
       </div>
 
       <div className="footer__rule footer__rule--after-social" />
       <p className="footer__brands-label">New Balance family of brands</p>
       <div className="footer__brands" role="group" aria-label="Family brands">
-        <img src={assets.brandBrine} alt="Brine" />
-        <img src={assets.brandWarrior} alt="Warrior" />
-        <img src={assets.brandTeamSports} alt="NB Team Sports" />
+        <img src={assets.brandBrine} alt="Brine" width={74} height={23} />
+        <img src={assets.brandWarrior} alt="Warrior" width={104} height={24} />
+        <img
+          src={assets.brandTeamSports}
+          alt="NB Team Sports"
+          width={111}
+          height={22}
+        />
       </div>
       <div className="footer__rule footer__rule--after-brands" />
 
-      <img
-        className="footer__logo"
-        src={assets.logoFooter}
-        alt="New Balance"
-        width={76}
-        height={37}
-      />
+      <div className="footer__logo">
+        <img
+          src={assets.logoFooter}
+          alt="New Balance"
+          width={76}
+          height={37}
+        />
+      </div>
 
       <div className="footer__legal">
-        <p>Privacy Policy</p>
-        <p>Responsible Disclosure</p>
-        <p>Website Terms &amp; Conditions</p>
-        <p>CA Supply Chains Act (SB 657) and Modern Slavery Act Statement</p>
-        <p>Health Data Privacy Policy</p>
-        <p>Do Not Sell or Share My Personal Information</p>
+        {LEGAL_LINKS.map((label) => (
+          <a key={label} href="#">
+            {label}
+          </a>
+        ))}
       </div>
       <p className="footer__copy">Copyright New Balance 2026</p>
     </footer>

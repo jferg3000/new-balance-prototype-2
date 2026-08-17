@@ -1,14 +1,9 @@
-/* Global Footer — Figma 141:1339 tokens, document flow (not sticky). */
+/* Global Footer — Footer 08/13 from new-balance-prototype-1 motion-study-1
+ * (Figma 16017:417). 402×1076 · Suisse Int'l · #151415 / #444344
+ * 16px insets · signup @ y=26 · plus rows · 156px bottom pad. */
 
 .footer {
-  background: var(--color-white);
-  color: var(--color-black);
-  /*
-   * Figma top inset before signup is 115px.
-   * Also clears fixed promo + nav when the footer reaches the viewport top.
-   * 38 + 60 + 17 = 115
-   */
-  padding: calc(var(--promo-bar-height) + var(--nav-height) + 17px) 16px 35px;
+  --footer-grey-20: #d0d0d0;
   position: relative;
   width: 100%;
   max-width: none;
@@ -19,76 +14,61 @@
   display: flex;
   flex-direction: column;
   overflow: visible;
-}
-
-/* Main columns inset to 32px (16px footer pad + 16px) */
-.footer__signup,
-.footer__nav,
-.footer__social,
-.footer__brands-label,
-.footer__brands,
-.footer__rule {
-  margin-left: 16px;
-  margin-right: 16px;
-  width: auto;
-  max-width: none;
-  box-sizing: border-box;
+  background: var(--color-white);
+  color: var(--color-black);
+  padding: 26px 0 calc(156px + env(safe-area-inset-bottom));
 }
 
 .footer__signup {
+  position: relative;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
-  font-size: 12px;
-  letter-spacing: 0.12px;
-  line-height: 1.1;
-  flex-shrink: 0;
+  margin: 0 16px;
 }
 
 .footer__signup p {
-  margin: 5px 0 0;
+  margin: 0;
   flex: 1;
   min-width: 0;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0.12px;
+  color: var(--color-black);
 }
 
-.footer__signup button {
+.footer__signup-icon {
   width: 24px;
   height: 24px;
   flex-shrink: 0;
-  display: block;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
+  overflow: hidden;
 }
 
-.footer__signup img {
+.footer__signup-icon img {
   display: block;
-  width: 24px;
-  height: 24px;
+  width: 100%;
+  height: 100%;
 }
 
 .footer__rule {
-  height: 1px;
-  background: #e0e0e0;
-  margin-top: 0;
-  margin-bottom: 0;
+  height: 0;
+  border: 0;
+  border-top: 1px solid var(--footer-grey-20);
+  margin: 0 16px;
   padding: 0;
   flex-shrink: 0;
-  border: 0;
 }
 
 .footer__rule--signup {
-  background: var(--color-black);
-  margin-top: 24px;
+  border-top-color: var(--color-black);
+  margin-top: 17px;
 }
 
 .footer__nav {
   display: flex;
   flex-direction: column;
-  margin-top: 68px;
+  margin: 68px 16px 0;
   flex-shrink: 0;
 }
 
@@ -97,39 +77,58 @@
   margin-right: 0;
 }
 
-.footer__row {
-  display: block;
-  width: 100%;
-  text-align: left;
-  font-size: 12px;
-  letter-spacing: 0.12px;
-  line-height: 40px;
-  height: 60px;
-  padding: 10px 0 0;
-  margin: 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  font-family: inherit;
-  cursor: pointer;
-  box-sizing: border-box;
-  flex-shrink: 0;
+.footer__section--spaced {
+  padding-top: 20px;
 }
 
-.footer__row--first {
-  height: 50px;
-  padding-top: 0;
+.footer__row {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  height: 40px;
+}
+
+.footer__row p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0.12px;
+  color: var(--color-black);
+}
+
+.footer__plus {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.footer__plus img {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .footer__social {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 12px;
-  margin-top: 22px;
+  margin: 32px 16px 0;
   font-size: 12px;
+  line-height: 20px;
   letter-spacing: 0.12px;
-  line-height: 40px;
+  color: var(--color-black);
   flex-shrink: 0;
+}
+
+.footer__social ul {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .footer__social a {
@@ -139,50 +138,34 @@
 }
 
 .footer__rule--after-social {
-  margin-top: 48px;
+  margin-top: 32px;
 }
 
 .footer__brands-label {
-  margin-top: 9px;
-  margin-bottom: 0;
+  margin: 9px 16px 0;
   font-size: 12px;
+  line-height: 20px;
   letter-spacing: 0.12px;
-  line-height: 40px;
+  text-align: left;
+  color: var(--color-black);
   flex-shrink: 0;
 }
 
-/*
- * Family brands row — Figma 141:1365.
- * Root overflow cause: a single 338.45px-wide SVG as a flex item with
- * min-width:auto + flex-shrink:0 could not shrink below its intrinsic
- * width, so on viewports < ~402px the right logo clipped / scrolled.
- */
 .footer__brands {
-  display: grid;
-  /* Logo widths 73.46 / 102.99 / 110; equal gaps 26 (= 7.682% of 338.45) */
-  grid-template-columns:
-    minmax(0, 73.46fr)
-    minmax(0, 102.99fr)
-    minmax(0, 110fr);
-  column-gap: 7.682%;
+  display: flex;
   align-items: center;
-  /*
-   * Do NOT use width:100% here — shared margin-inline:16px + width:100%
-   * overflows the padded footer. Let flex stretch + margins size the row
-   * (same pattern as .footer__rule).
-   */
-  width: auto;
+  justify-content: space-between;
+  height: 24px;
+  margin: 26px 16px 0;
   min-width: 0;
-  margin-top: 6px;
-  margin-bottom: 0;
-  flex-shrink: 1;
+  flex-shrink: 0;
 }
 
 .footer__brands img {
   display: block;
-  width: 100%;
-  max-width: 100%;
-  height: auto;
+  height: 100%;
+  width: auto;
+  max-width: none;
   object-fit: contain;
 }
 
@@ -191,32 +174,45 @@
 }
 
 .footer__logo {
-  display: block;
   width: 76px;
   height: 37px;
   margin: 35px auto 0;
+  overflow: hidden;
   flex-shrink: 0;
+}
+
+.footer__logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .footer__legal {
-  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 50px 16px 0;
   text-align: center;
   color: var(--color-grey-80);
-  font-size: 11px;
-  line-height: 1;
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: 0.1px;
   flex-shrink: 0;
 }
 
-.footer__legal p + p {
-  margin-top: 16px;
+.footer__legal a {
+  color: inherit;
+  text-decoration: none;
 }
 
 .footer__copy {
-  margin-top: 43px;
-  padding-top: 0;
+  margin: 77px 16px 0;
   text-align: center;
   color: var(--color-grey-80);
-  font-size: 11px;
-  line-height: 40px;
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: 0.1px;
   flex-shrink: 0;
 }
