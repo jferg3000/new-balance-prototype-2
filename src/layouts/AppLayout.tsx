@@ -18,6 +18,10 @@ import { ScrollHeaderProvider } from "../hooks/useScrollAwareHeader";
  * All other routes use the document-flow Footer after <Outlet />.
  *
  * Scroll-hide header behavior is enabled on all routes except Homepage.
+ *
+ * Shell is 100% wide up to `--nb-frame-max` (440px), centered on larger
+ * viewports. Fixed chrome (promo, nav, ATC, drawers) uses `.nb-fixed-shell`
+ * so it matches that column.
  */
 export default function AppLayout() {
   const { pathname } = useLocation();
@@ -28,9 +32,11 @@ export default function AppLayout() {
 
   return (
     <ScrollHeaderProvider enabled={scrollHeaderEnabled} routeKey={pathname}>
-      <PromoBar />
-      <Outlet />
-      {!isHomepage ? <Footer /> : null}
+      <div className="nb-shell">
+        <PromoBar />
+        <Outlet />
+        {!isHomepage ? <Footer /> : null}
+      </div>
     </ScrollHeaderProvider>
   );
 }

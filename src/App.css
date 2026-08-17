@@ -36,10 +36,9 @@ html:has(.page[data-state="ready"]) body {
 }
 
 /*
- * Desktop preview only — hide `.page` scrollbar UI (scroll still works).
- * Scoped with hover/fine pointer (not min-width:769): the preview iframe
- * viewport is ~430px, so a min-width query would never match inside it.
- * Real phones stay on pointer:coarse and keep default scrollbar behavior.
+ * Desktop letterbox: hide `.page` scrollbar UI (scroll still works).
+ * Scoped with hover/fine pointer (not min-width) so real phones keep
+ * default scrollbar behavior.
  */
 @media (hover: hover) and (pointer: fine) {
   .page[data-state="ready"] {
@@ -79,8 +78,7 @@ html:has(.page[data-state="ready"]) body {
 /* —— One Peep Intro Stack → Final Hero —— */
 .intro-stack {
   position: fixed;
-  inset: 0;
-  width: 100vw;
+  top: 0;
   height: 100vh;
   height: 100dvh;
   z-index: 40;
@@ -164,8 +162,6 @@ html:has(.page[data-state="ready"]) body {
 .site-nav {
   position: fixed;
   top: var(--promo-bar-height);
-  left: 0;
-  width: 100%;
   z-index: 100;
   pointer-events: none;
   color: #fff;
@@ -767,7 +763,7 @@ html:has(.page[data-state="ready"]) body {
  *
  * (pointer: coarse) keeps this pin on real phones even when the layout
  * viewport reports >768px (“Request Desktop Website”). Fine-pointer
- * desktop preview stays on width via the 430px iframe.
+ * desktop uses the letterboxed 440 shell.
  */
 @media (max-width: 768px), (pointer: coarse) {
   .page {

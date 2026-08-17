@@ -177,7 +177,7 @@ export default function FullScreenDrawer({
 
   return createPortal(
     <div
-      className="fs-drawer"
+      className="fs-drawer nb-fixed-shell"
       data-open={open && !closing ? "true" : "false"}
       data-closing={closing ? "true" : undefined}
     >

@@ -17,7 +17,7 @@ const DEFAULT_SWATCH =
 const FOOTER_CLEARANCE_PX = 50;
 
 /**
- * Sole PDP Add to Bag CTA — always position:fixed at the viewport bottom.
+ * Sole PDP Add to Bag CTA — always position:fixed at the shell bottom.
  *
  * States (same mounted shell, CSS morph):
  * - detailed → Figma 125:1077 (color row + button)
@@ -41,7 +41,7 @@ export default function PdpStickyAddToBag({
 
   return createPortal(
     <div
-      className="pdp-sticky-atc"
+      className="pdp-sticky-atc nb-fixed-shell"
       data-mode={mode}
       data-footer-hidden={footerInView ? "true" : "false"}
       role="region"

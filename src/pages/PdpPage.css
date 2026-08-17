@@ -368,6 +368,7 @@
 
 /*
  * Sole PDP Add to Bag — always position:fixed (portaled to body).
+ * Width matches the 440 shell via `.nb-fixed-shell`.
  * Morphs detailed (125:1077) ↔ simple (125:1074) on the same shell.
  * Duration/ease tokens injected from pdpStickyAtcMotion.ts
  */
@@ -389,10 +390,7 @@
   --pdp-atc-footer-reappear-duration: 360ms;
   --pdp-atc-footer-reappear-ease: cubic-bezier(0.16, 1, 0.3, 1);
   position: fixed;
-  left: 0;
-  right: 0;
   bottom: 0;
-  width: 100%;
   z-index: 95; /* below Main Nav (100) / Promo (120); above PDP content */
   pointer-events: auto;
   transform: translate3d(0, 0, 0);

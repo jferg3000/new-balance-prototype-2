@@ -36,7 +36,7 @@ export default function GlobalNavigation({
 
   return (
     <header
-      className="site-nav"
+      className="site-nav nb-fixed-shell"
       data-nav-color={color}
       data-nav-variant={variant}
       data-header-nav={enabled ? navMode : undefined}

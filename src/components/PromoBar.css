@@ -2,8 +2,6 @@
 .promo-bar {
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
   height: var(--promo-bar-height);
   z-index: 120;
   background: var(--color-white);

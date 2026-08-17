@@ -51,6 +51,28 @@ function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
+function readFrameMaxPx() {
+  const raw = getComputedStyle(document.documentElement)
+    .getPropertyValue("--nb-frame-max")
+    .trim();
+  const n = Number.parseFloat(raw);
+  return Number.isFinite(n) && n > 0 ? n : 440;
+}
+
+/** Convert a viewport rect into coordinates local to the intro overlay. */
+function overlayLocalRect(
+  overlay: HTMLElement,
+  r: DOMRect,
+): { left: number; top: number; width: number; height: number } {
+  const o = overlay.getBoundingClientRect();
+  return {
+    left: r.left - o.left,
+    top: r.top - o.top,
+    width: r.width,
+    height: r.height,
+  };
+}
+
 function revealPage(
   stage: HTMLElement,
   overlay: HTMLElement,
@@ -82,11 +104,12 @@ function revealPage(
     if (heroMedia && introFront) {
       const r = heroMedia.getBoundingClientRect();
       if (r.width > 1 && r.height > 1) {
+        const local = overlayLocalRect(overlay, r);
         gsap.set(introFront, {
-          left: r.left,
-          top: r.top,
-          width: r.width,
-          height: r.height,
+          left: local.left,
+          top: local.top,
+          width: local.width,
+          height: local.height,
           x: 0,
           y: 0,
           scale: 1,
@@ -280,10 +303,17 @@ export function useHeroIntro({
     hideChrome();
     if (overlayDim) gsap.set(overlayDim, { opacity: 1 });
 
-    // Intro Stack geometry from Figma 72:314 (402×874), % for responsiveness.
+    // Intro Stack geometry from Figma 72:314 (402×874), % of the 440 shell.
     // Front 72:363 — 42,106 322×644
     // Back  81:1215 — aligned width with front; y so lower portion peeks
-    const vw = () => window.innerWidth;
+    const vw = () => {
+      const shell = document.querySelector<HTMLElement>(".nb-shell");
+      const shellW = shell?.getBoundingClientRect().width ?? 0;
+      if (shellW > 1) return shellW;
+      const overlayW = overlay.getBoundingClientRect().width;
+      if (overlayW > 1) return overlayW;
+      return Math.min(window.innerWidth, readFrameMaxPx());
+    };
     /** Desktop / expand end — unchanged layout viewport. */
     const vh = () => window.innerHeight;
     /**
@@ -380,22 +410,14 @@ export function useHeroIntro({
       if (media) {
         const r = media.getBoundingClientRect();
         if (r.width > 1 && r.height > 1) {
-          return {
-            left: r.left,
-            top: r.top,
-            width: r.width,
-            height: r.height,
-          };
+          return overlayLocalRect(overlay, r);
         }
       }
-      const probe = document.createElement("div");
-      probe.style.cssText =
-        "position:fixed;left:0;top:0;width:100%;height:100svh;visibility:hidden;pointer-events:none";
-      document.body.appendChild(probe);
-      const width = probe.offsetWidth || vw();
-      const height = probe.offsetHeight || vh();
-      probe.remove();
-      return { left: 0, top: 0, width, height };
+      const o = overlay.getBoundingClientRect();
+      if (o.width > 1) {
+        return { left: 0, top: 0, width: o.width, height: o.height || vh() };
+      }
+      return { left: 0, top: 0, width: vw(), height: vh() };
     };
 
     /** Uniform FLIP invert: hero-sized frame visually parked on a peep rect. */

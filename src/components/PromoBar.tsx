@@ -12,7 +12,7 @@ export function PromoBar() {
 
   return (
     <div
-      className="promo-bar"
+      className="promo-bar nb-fixed-shell"
       data-node-id="83:2742"
       data-header-promo={hidden ? "hidden" : "shown"}
       role="region"

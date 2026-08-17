@@ -36,7 +36,7 @@ function SiteNav({
 }) {
   return (
     <header
-      className="site-nav site-nav--cube"
+      className="site-nav site-nav--cube nb-fixed-shell"
       data-nav-color={color}
       data-footer-hidden={footerHidden ? "true" : undefined}
     >
@@ -79,7 +79,7 @@ function IntroStackOverlay({
 }) {
   return (
     <div
-      className="intro-stack"
+      className="intro-stack nb-fixed-shell"
       ref={overlayRef}
       data-visible="true"
       data-peep-intro="true"

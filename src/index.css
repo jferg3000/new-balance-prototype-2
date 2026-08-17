@@ -146,6 +146,11 @@
   --nav-height: 54px;
   /* Figma Promo bar 83:2742 */
   --promo-bar-height: 38px;
+  /* Figma design 402; live shell fills the device up to iPhone Pro Max. */
+  --nb-frame-design: 402px;
+  --nb-frame-max: 440px;
+  /* Outer browser letterbox around the centered mobile shell. */
+  --nb-canvas: #272727;
 }
 
 *,
@@ -156,7 +161,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  background: #000;
+  background: var(--nb-canvas);
   /* Hide scrollbar only — do NOT set overflow-x here (breaks position:sticky) */
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -173,13 +178,13 @@ body,
 #root {
   margin: 0;
   min-height: 100%;
-  background: #000;
+  background: var(--nb-canvas);
 }
 
 body {
   font-family: var(--font-body);
   color: var(--color-black);
-  background: #000;
+  background: var(--nb-canvas);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
@@ -195,7 +200,44 @@ body::-webkit-scrollbar {
 
 body.is-intro-locked {
   overflow: hidden;
+  background: var(--nb-canvas);
+}
+
+/*
+ * In-flow mobile shell — 100% wide, capped at 440px, centered.
+ * Do not put transform on this node: position:fixed descendants would
+ * then pin to the shell instead of the viewport.
+ */
+.nb-shell {
+  position: relative;
+  width: 100%;
+  max-width: var(--nb-frame-max);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Homepage column is black; fill #root height so svh/dvh slack isn't canvas. */
+html:has(.page) .nb-shell {
+  min-height: 100%;
   background: #000;
+}
+
+/*
+ * Fixed layers (promo, nav, ATC, drawers, intro) that must match the
+ * page shell. Center with left + margin — not translateX — so existing
+ * translateY hide/reveal (and GSAP y) keep working.
+ */
+.nb-fixed-shell,
+.promo-bar.nb-fixed-shell,
+.site-nav.nb-fixed-shell,
+.intro-stack.nb-fixed-shell,
+.pdp-sticky-atc.nb-fixed-shell,
+.fs-drawer.nb-fixed-shell {
+  left: 50%;
+  right: auto;
+  width: 100%;
+  max-width: var(--nb-frame-max);
+  margin-left: calc(-0.5 * min(100vw, var(--nb-frame-max)));
 }
 
 img {
