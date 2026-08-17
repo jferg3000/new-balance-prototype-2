@@ -743,6 +743,11 @@ html:has(.page[data-state="ready"]) body {
   text-decoration-thickness: from-font;
 }
 
+.section--utility .section__cta {
+  white-space: nowrap;
+  width: max-content;
+}
+
 .section--editorial .section__cta,
 .section--product .section__cta {
   color: var(--color-black);
