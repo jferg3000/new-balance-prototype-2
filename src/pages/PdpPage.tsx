@@ -51,43 +51,49 @@ export default function PdpPage() {
       <main className="pdp__main">
         <PdpHero product={product} />
 
-        <PdpSection2
-          compositionSrc={
-            isFullPdp ? product.images.section2Composition : ""
-          }
-          atcFullTriggerRef={atcMorphTriggerRef}
-        />
+        {/*
+          Hero is sticky z-1. This block is relative z-3 so campaign / modules
+          slide over it — same stack as motion-study-1 ellipse PDP.
+        */}
+        <div className="pdp-stack">
+          <PdpSection2
+            compositionSrc={
+              isFullPdp ? product.images.section2Composition : ""
+            }
+            atcFullTriggerRef={atcMorphTriggerRef}
+          />
 
-        <PdpShopTheLook
-          imageSrc={isFullPdp ? product.images.shopTheLookTall : ""}
-        />
+          <PdpShopTheLook
+            imageSrc={isFullPdp ? product.images.shopTheLookTall : ""}
+          />
 
-        <PdpDefineYourStyle
-          videoSrc={
-            isFullPdp ? "/assets/pdp/editorial/define-your-style.mp4" : ""
-          }
-          posterSrc={isFullPdp ? product.images.defineYourStyle : undefined}
-        />
+          <PdpDefineYourStyle
+            videoSrc={
+              isFullPdp ? "/assets/pdp/editorial/define-your-style.mp4" : ""
+            }
+            posterSrc={isFullPdp ? product.images.defineYourStyle : undefined}
+          />
 
-        <PdpCompare
-          primaryImage={isFullPdp ? product.images.comparePrimary : ""}
-          primaryOverlayImage={
-            isFullPdp ? product.images.comparePrimaryOverlay : ""
-          }
-        />
+          <PdpCompare
+            primaryImage={isFullPdp ? product.images.comparePrimary : ""}
+            primaryOverlayImage={
+              isFullPdp ? product.images.comparePrimaryOverlay : ""
+            }
+          />
 
-        <PdpEditorsPicks
-          heroSrc={isFullPdp ? product.images.editorsHero : ""}
-          thumbs={
-            isFullPdp
-              ? product.images.editorsThumbs
-              : ["", "", "", "", "", ""]
-          }
-        />
+          <PdpEditorsPicks
+            heroSrc={isFullPdp ? product.images.editorsHero : ""}
+            thumbs={
+              isFullPdp
+                ? product.images.editorsThumbs
+                : ["", "", "", "", "", ""]
+            }
+          />
 
-        <PdpProductPairings
-          images={isFullPdp ? product.images.pairings : ["", "", "", ""]}
-        />
+          <PdpProductPairings
+            images={isFullPdp ? product.images.pairings : ["", "", "", ""]}
+          />
+        </div>
       </main>
 
       <PdpStickyAddToBag product={product} mode={atcMode} />
