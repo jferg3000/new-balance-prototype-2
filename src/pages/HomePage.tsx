@@ -49,17 +49,17 @@ function SiteNav({
           <div className="site-nav__face" data-nav-face>
             <div className="nav">
               <button type="button" className="nav__menu" aria-label="Menu">
-                <IconMenu />
+                <IconMenu tone={color} />
               </button>
               <Link to="/" className="nav__logo" aria-label="New Balance home">
-                <IconLogo />
+                <IconLogo tone={color} />
               </Link>
               <div className="nav__actions">
                 <button type="button" aria-label="Search">
-                  <IconSearch />
+                  <IconSearch tone={color} />
                 </button>
                 <button type="button" aria-label="Bag">
-                  <IconBag />
+                  <IconBag tone={color} />
                 </button>
               </div>
             </div>

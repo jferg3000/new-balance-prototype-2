@@ -44,21 +44,21 @@ export default function GlobalNavigation({
     >
       <div className="nav">
         <button type="button" className="nav__menu" aria-label="Menu">
-          <IconMenu />
+          <IconMenu tone={color} />
         </button>
         <Link to="/" className="nav__logo" aria-label="New Balance home">
-          <IconLogo />
+          <IconLogo tone={color} />
         </Link>
         <div className="nav__actions">
           <button type="button" aria-label="Search">
-            <IconSearch />
+            <IconSearch tone={color} />
           </button>
           <button
             type="button"
             className={bagCount !== undefined ? "nav__bag" : undefined}
             aria-label={bagLabel}
           >
-            <IconBag />
+            <IconBag tone={color} />
             {bagCount !== undefined ? (
               <span className="nav__bag-count" aria-hidden="true">
                 {bagCount}
