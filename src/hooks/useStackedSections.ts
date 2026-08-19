@@ -8,8 +8,6 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, CustomEase);
 
 // Soft settle — cubic-bezier(0.16, 1, 0.3, 1). Same family as the nav cube.
 CustomEase.create("stackSnap", "M0,0 C0.16,1 0.3,1 1,1");
-// Time-mirror for reverse: cubic-bezier(0.7, 0, 0.84, 0).
-CustomEase.create("stackSnapReverse", "M0,0 C0.7,0 0.84,0 1,1");
 
 type Options = {
   containerRef: React.RefObject<HTMLElement | null>;
@@ -41,9 +39,8 @@ const SNAP_DURATION = 1.05;
 const SNAP_DURATION_TOUCH = 1.12;
 /** Keep full travel after commit (no mid-transition jump). */
 const COMMIT_JUMP_RATIO = 0;
-/** Forward: cubic-bezier(0.16, 1, 0.3, 1). Reverse uses stackSnapReverse. */
+/** Forward and reverse share the same ease-out settle. */
 const SNAP_EASE = "stackSnap";
-const SNAP_EASE_REVERSE = "stackSnapReverse";
 const SNAP_DURATION_REDUCED = 0.01;
 /**
  * Under-card recede: zoom slightly inside the clipped stage so the frame
@@ -283,6 +280,8 @@ export function useStackedSections({
         duration?: number;
         targetIndex?: number;
         ease?: string;
+        /** After the visual settle, park here (skips empty reverse hold). */
+        settleY?: number;
       },
     ) => {
       const y = Math.max(0, Math.min(maxScrollY(), targetY));
@@ -298,14 +297,16 @@ export function useStackedSections({
               gsap.utils.clamp(
                 0.42,
                 1,
-                0.4 +
-                  (0.6 * Math.abs(y - fromY)) /
-                    Math.max(1, (1 + DWELL) * viewH()),
+                0.4 + (0.6 * Math.abs(y - fromY)) / Math.max(1, viewH()),
               )
             : SNAP_DURATION;
       const targetIndex =
         options?.targetIndex !== undefined ? options.targetIndex : null;
       const ease = options?.ease ?? SNAP_EASE;
+      const settleY =
+        options?.settleY !== undefined
+          ? Math.max(0, Math.min(maxScrollY(), options.settleY))
+          : y;
 
       killSnap();
       snapping = true;
@@ -338,7 +339,7 @@ export function useStackedSections({
         },
         onComplete: () => {
           unlockSnap();
-          setScrollY(y);
+          setScrollY(settleY);
           ScrollTrigger.update();
           syncNavColor();
           syncFooterZone();
@@ -627,8 +628,7 @@ export function useStackedSections({
       const finish = {
         fromY,
         jumpRatio: COMMIT_JUMP_RATIO,
-        // Forward ease-out; reverse ease-in (mirrored) so cover-undo isn't rushed.
-        ease: direction < 0 ? SNAP_EASE_REVERSE : SNAP_EASE,
+        ease: SNAP_EASE,
       };
 
       // Scrolled into the document-flow footer — reverse returns to final card.
@@ -640,6 +640,19 @@ export function useStackedSections({
       // Final content card forward → leave the stack into the footer below.
       if (direction > 0 && fromIndex >= last) {
         snapToScrollY(footerScrollY(), finish);
+        return;
+      }
+
+      // Reverse: animate only the cover-undo, then park on the previous card
+      // (the trailing hold is empty and made the undo feel slower).
+      if (direction < 0) {
+        const parkY = cardScrollY(next);
+        const coverDoneY = parkY + DWELL * viewH();
+        snapToScrollY(Math.min(fromY, coverDoneY), {
+          ...finish,
+          targetIndex: next,
+          settleY: parkY,
+        });
         return;
       }
 
@@ -860,10 +873,7 @@ export function useStackedSections({
           if (Math.abs(getScrollY() - cardScrollY(swipe.startIndex)) > 1) {
             snapToCardIndex(swipe.startIndex, {
               fromY: getScrollY(),
-              ease:
-                getScrollY() > cardScrollY(swipe.startIndex)
-                  ? SNAP_EASE_REVERSE
-                  : SNAP_EASE,
+              ease: SNAP_EASE,
             });
           } else {
             freezeAt(swipe.startScrollY);
