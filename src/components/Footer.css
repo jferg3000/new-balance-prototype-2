@@ -1,9 +1,13 @@
-/* Global Footer — Footer 08/13 from new-balance-prototype-1 motion-study-1
- * (Figma 16017:417). 402×1076 · Suisse Int'l · #151415 / #444344
- * 16px insets · signup @ y=26 · plus rows · 156px bottom pad. */
+/* Global Footer — Footer 08/19 from new-balance-prototype-1 motion-study-1
+ * (Figma 16205:186). 402×710 · Suisse Int'l · #151415 / #4b4b4b / #999
+ * 16px insets · signup @ y=40 · plus rows · ~52px bottom pad. */
 
 .footer {
+  --footer-grey-12: #e3e3e3;
   --footer-grey-20: #d0d0d0;
+  --footer-legal: #4b4b4b;
+  --footer-copy: #999999;
+  --footer-off-white: #f7f7f7;
   position: relative;
   width: 100%;
   max-width: none;
@@ -16,13 +20,13 @@
   overflow: visible;
   background: var(--color-white);
   color: var(--color-black);
-  padding: 26px 0 calc(156px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--footer-grey-12);
+  padding: 40px 0 calc(52px + env(safe-area-inset-bottom));
 }
 
 .footer__signup {
-  position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
   margin: 0 16px;
@@ -30,51 +34,39 @@
 
 .footer__signup p {
   margin: 0;
-  flex: 1;
-  min-width: 0;
+  width: 179px;
+  flex-shrink: 1;
+  font-weight: 500;
   font-size: 12px;
   line-height: 20px;
   letter-spacing: 0.12px;
   color: var(--color-black);
 }
 
-.footer__signup-icon {
-  width: 24px;
-  height: 24px;
+.footer__signup-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 40px;
   flex-shrink: 0;
-  overflow: hidden;
-}
-
-.footer__signup-icon img {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.footer__rule {
-  height: 0;
-  border: 0;
-  border-top: 1px solid var(--footer-grey-20);
-  margin: 0 16px;
   padding: 0;
-  flex-shrink: 0;
-}
-
-.footer__rule--signup {
-  border-top-color: var(--color-black);
-  margin-top: 17px;
+  border: 0;
+  background: var(--color-black);
+  color: var(--footer-off-white);
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0.12px;
+  cursor: pointer;
 }
 
 .footer__nav {
   display: flex;
   flex-direction: column;
-  margin: 68px 16px 0;
+  margin: 40px 16px 0;
   flex-shrink: 0;
-}
-
-.footer__nav .footer__rule {
-  margin-left: 0;
-  margin-right: 0;
 }
 
 .footer__section--spaced {
@@ -91,6 +83,7 @@
 
 .footer__row p {
   margin: 0;
+  font-weight: 500;
   font-size: 12px;
   line-height: 20px;
   letter-spacing: 0.12px;
@@ -111,72 +104,19 @@
   height: 100%;
 }
 
-.footer__social {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin: 32px 16px 0;
-  font-size: 12px;
-  line-height: 20px;
-  letter-spacing: 0.12px;
-  color: var(--color-black);
-  flex-shrink: 0;
-}
-
-.footer__social ul {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.footer__rule {
+  height: 0;
+  border: 0;
+  border-top: 1px solid var(--footer-grey-20);
   margin: 0;
   padding: 0;
-  list-style: none;
-}
-
-.footer__social a {
-  display: block;
-  color: inherit;
-  text-decoration: none;
-}
-
-.footer__rule--after-social {
-  margin-top: 32px;
-}
-
-.footer__brands-label {
-  margin: 9px 16px 0;
-  font-size: 12px;
-  line-height: 20px;
-  letter-spacing: 0.12px;
-  text-align: left;
-  color: var(--color-black);
   flex-shrink: 0;
-}
-
-.footer__brands {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 24px;
-  margin: 26px 16px 0;
-  min-width: 0;
-  flex-shrink: 0;
-}
-
-.footer__brands img {
-  display: block;
-  height: 100%;
-  width: auto;
-  max-width: none;
-  object-fit: contain;
-}
-
-.footer__rule--after-brands {
-  margin-top: 35px;
 }
 
 .footer__logo {
-  width: 76px;
-  height: 37px;
-  margin: 35px auto 0;
+  width: 68px;
+  height: 33px;
+  margin: 40px 16px 0;
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -186,18 +126,39 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  object-position: left center;
+}
+
+.footer__social {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 24px 16px 0;
+  padding: 0;
+  list-style: none;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0.12px;
+  color: var(--color-black);
+  flex-shrink: 0;
+}
+
+.footer__social a {
+  color: inherit;
+  text-decoration: none;
 }
 
 .footer__legal {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
-  margin: 50px 16px 0;
-  text-align: center;
-  color: var(--color-grey-80);
+  margin: 40px 16px 0;
+  text-align: left;
+  color: var(--footer-legal);
   font-size: 10px;
-  line-height: 12px;
+  line-height: 14px;
   letter-spacing: 0.1px;
   flex-shrink: 0;
 }
@@ -208,9 +169,10 @@
 }
 
 .footer__copy {
-  margin: 77px 16px 0;
-  text-align: center;
-  color: var(--color-grey-80);
+  margin: 24px 16px 0;
+  text-align: left;
+  color: var(--footer-copy);
+  font-weight: 500;
   font-size: 10px;
   line-height: 12px;
   letter-spacing: 0.1px;

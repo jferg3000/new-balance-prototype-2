@@ -2,17 +2,18 @@ import "./Footer.css";
 
 const assets = {
   logoFooter: "/assets/logo-footer.svg",
-  brandBrine: "/assets/brand-brine.svg",
-  brandWarrior: "/assets/brand-warrior.svg",
-  brandTeamSports: "/assets/brand-team-sports.svg",
-  arrow: "/assets/icon-arrow.svg",
   plus: "/assets/icon-plus-small.svg",
 };
 
-const LINK_SECTIONS = ["Help", "Shop", "About us", "For you"] as const;
+const LINK_SECTIONS = ["Shop", "For You", "About us", "Help"] as const;
 
-const SOCIAL_LEFT = ["Instagram", "Facebook", "X"] as const;
-const SOCIAL_RIGHT = ["YouTube", "Pinterest", "TikTok"] as const;
+const SOCIAL_LINKS = [
+  "Instagram",
+  "Facebook",
+  "X",
+  "YouTube",
+  "TikTok",
+] as const;
 
 const LEGAL_LINKS = [
   "Privacy Policy",
@@ -24,8 +25,8 @@ const LEGAL_LINKS = [
 ] as const;
 
 /**
- * Global Footer — exact Footer 08/13 from new-balance-prototype-1
- * (`motion-study-1`, Figma 16017:417).
+ * Global Footer — exact Footer 08/19 from new-balance-prototype-1
+ * (`motion-study-1`, Figma 16205:186).
  * Keeps `data-global-footer` / `data-nav-color` for this prototype's chrome.
  */
 export function Footer() {
@@ -34,22 +35,24 @@ export function Footer() {
       className="footer"
       data-global-footer
       data-nav-color="black"
-      data-node-id="16017:417"
+      data-component="Footer"
+      data-node-id="16205:186"
     >
       <div className="footer__signup">
         <p>Sign up to be the first to know about new arrivals</p>
-        <span className="footer__signup-icon" aria-hidden>
-          <img src={assets.arrow} alt="" width={24} height={24} />
-        </span>
+        <button type="button" className="footer__signup-btn">
+          Sign up
+        </button>
       </div>
-      <div className="footer__rule footer__rule--signup" />
 
       <nav className="footer__nav" aria-label="Footer">
         {LINK_SECTIONS.map((label, index) => (
           <div
             key={label}
             className={
-              index === 0 ? "footer__section" : "footer__section footer__section--spaced"
+              index === 0
+                ? "footer__section"
+                : "footer__section footer__section--spaced"
             }
           >
             <div className="footer__row">
@@ -63,45 +66,22 @@ export function Footer() {
         ))}
       </nav>
 
-      <div className="footer__social">
-        <ul>
-          {SOCIAL_LEFT.map((label) => (
-            <li key={label}>
-              <a href="#">{label}</a>
-            </li>
-          ))}
-        </ul>
-        <ul>
-          {SOCIAL_RIGHT.map((label) => (
-            <li key={label}>
-              <a href="#">{label}</a>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="footer__rule footer__rule--after-social" />
-      <p className="footer__brands-label">New Balance family of brands</p>
-      <div className="footer__brands" role="group" aria-label="Family brands">
-        <img src={assets.brandBrine} alt="Brine" width={74} height={23} />
-        <img src={assets.brandWarrior} alt="Warrior" width={104} height={24} />
-        <img
-          src={assets.brandTeamSports}
-          alt="NB Team Sports"
-          width={111}
-          height={22}
-        />
-      </div>
-      <div className="footer__rule footer__rule--after-brands" />
-
       <div className="footer__logo">
         <img
           src={assets.logoFooter}
           alt="New Balance"
-          width={76}
-          height={37}
+          width={68}
+          height={33}
         />
       </div>
+
+      <ul className="footer__social">
+        {SOCIAL_LINKS.map((label) => (
+          <li key={label}>
+            <a href="#">{label}</a>
+          </li>
+        ))}
+      </ul>
 
       <div className="footer__legal">
         {LEGAL_LINKS.map((label) => (
@@ -110,7 +90,8 @@ export function Footer() {
           </a>
         ))}
       </div>
-      <p className="footer__copy">Copyright New Balance 2026</p>
+
+      <p className="footer__copy">© Copyright New Balance 2026</p>
     </footer>
   );
 }
