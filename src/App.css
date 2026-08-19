@@ -1003,22 +1003,26 @@ html:has(.page[data-state="ready"]) body {
   }
 }
 
-/* Real phones only — Sézane layout tweaks (desktop / desktop-preview unchanged) */
+/* Real phones only — Sézane: clear the overlay chrome; don’t pull the photo up. */
 @media (pointer: coarse) {
   .section--editorial .section__title--top {
-    top: calc(150 / 874 * 100% + 10px);
+    top: calc(var(--promo-bar-height) + var(--nav-height) + 20px);
+    transform: translateX(-50%);
   }
 
-  /* Shorten frame from the bottom; top stay (incl. prior 10px nudge). Subtitle stays pinned. */
   .section--editorial .section__media--inset {
-    top: calc(170 / 874 * 100% + 10px);
-    height: calc(560 / 874 * 100% - 35px);
+    top: calc(var(--promo-bar-height) + var(--nav-height) + 74px);
+    height: auto;
+    bottom: calc(
+      var(--hp-cta-bottom) + var(--hp-cta-line) + var(--hp-subtitle-cta-gap) + 28px
+    );
   }
 
-  /* Shift photo up inside the fixed frame — reveal more at the bottom; frame size unchanged */
   .section--editorial .section__media--inset img {
-    height: calc(100% + 58px);
-    transform: translateY(-58px);
+    height: 100%;
+    transform: none;
+    object-fit: cover;
+    object-position: center 12%;
   }
 
   /*
