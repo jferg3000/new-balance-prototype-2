@@ -375,6 +375,10 @@ html:has(.page[data-state="ready"]) body {
   color: inherit;
 }
 
+.nav__actions button:first-child {
+  transform: translateX(5px);
+}
+
 .nav__actions svg {
   display: block;
 }
