@@ -558,12 +558,6 @@
   width: 100%;
   color: inherit;
   text-decoration: none;
-  cursor: pointer;
-}
-
-.plp-discover__link:focus-visible {
-  outline: 2px solid var(--color-black);
-  outline-offset: 2px;
 }
 
 .plp-discover__media {
@@ -610,7 +604,7 @@
   font-weight: 400;
   line-height: 16px;
   letter-spacing: 0.12px;
-  color: var(--plp-grey-50);
+  color: var(--color-black);
 }
 
 /* —— 3. Filter & View — sticky chrome Figma 122:1054 (402×50) —— */

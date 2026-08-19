@@ -218,6 +218,8 @@ type FlatGridItem = {
   product: ProductCard;
   productId: string;
   reveal?: boolean;
+  /** Filtered-results exception: card body opens PDP; plus stays Quick Shop. */
+  linkToPdp?: boolean;
 };
 
 const DISCOVER = [
@@ -436,11 +438,13 @@ function ProductTile({
   product,
   productId,
   reveal = false,
+  linkToPdp = false,
   onSelect,
 }: {
   product: ProductCard;
   productId: string;
   reveal?: boolean;
+  linkToPdp?: boolean;
   onSelect?: (product: ProductCard, productId: string) => void;
 }) {
   const pdpLabel = [
@@ -468,7 +472,6 @@ function ProductTile({
         <div className="plp-card__media">
           <img className="plp-card__img" src={product.image} alt="" />
         </div>
-        {/* Sibling of the PDP link — not nested inside it */}
         <button
           type="button"
           className="plp-card__quickshop"
@@ -496,12 +499,14 @@ function ProductTile({
           )}
         </p>
       </div>
-      <Link
-        to={`/pdp/${productId}`}
-        className="plp-card__hit"
-        state={pdpState}
-        aria-label={pdpLabel}
-      />
+      {linkToPdp ? (
+        <Link
+          to={`/pdp/${productId}`}
+          className="plp-card__hit"
+          state={pdpState}
+          aria-label={pdpLabel}
+        />
+      ) : null}
     </article>
   );
 }
@@ -538,6 +543,7 @@ function ProductGrid({
           productId={item.productId}
           product={item.product}
           reveal={item.reveal}
+          linkToPdp={item.linkToPdp}
           onSelect={onProductSelect}
         />
       ))}
@@ -653,7 +659,7 @@ function withFixedQuickShopTestProduct(
   const others = takeProductSlice(withoutFixed, Math.max(0, count - 1));
   const targetIndex = Math.min(columnCount, others.length);
   const result = [...others];
-  result.splice(targetIndex, 0, { ...QUICK_SHOP_TEST_ITEM });
+  result.splice(targetIndex, 0, { ...QUICK_SHOP_TEST_ITEM, linkToPdp: true });
   return result.slice(0, count);
 }
 
@@ -1439,39 +1445,23 @@ export default function Plp9060Page() {
               colorways
             </h2>
             <ul className="plp-discover__list">
-              {DISCOVER.map((item) => {
-                const pdpState = {
-                  name: item.name,
-                  price: item.price,
-                  tagline: "Bouncy comfort for everyday miles",
-                  image: item.image,
-                  colorName: item.label,
-                  colorSwatch: item.colorSwatch,
-                } satisfies PdpEntryState;
-
-                return (
-                  <li key={item.id} className="plp-discover__item">
-                    <Link
-                      to={`/pdp/${item.id}`}
-                      className="plp-discover__link"
-                      state={pdpState}
-                      aria-label={`${item.name}, ${item.label}, ${item.price}`}
-                    >
-                      <div className="plp-discover__media">
-                        <img
-                          className="plp-discover__img"
-                          src={item.image}
-                          alt=""
-                        />
-                      </div>
-                      <div className="plp-discover__text">
-                        <p className="plp-discover__label">{item.label}</p>
-                        <p className="plp-discover__price">{item.price}</p>
-                      </div>
-                    </Link>
-                  </li>
-                );
-              })}
+              {DISCOVER.map((item) => (
+                <li key={item.id} className="plp-discover__item">
+                  <div className="plp-discover__link">
+                    <div className="plp-discover__media">
+                      <img
+                        className="plp-discover__img"
+                        src={item.image}
+                        alt=""
+                      />
+                    </div>
+                    <div className="plp-discover__text">
+                      <p className="plp-discover__label">{item.label}</p>
+                      <p className="plp-discover__price">{item.price}</p>
+                    </div>
+                  </div>
+                </li>
+              ))}
             </ul>
           </div>
         </ScrollReveal>
