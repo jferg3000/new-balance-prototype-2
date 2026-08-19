@@ -267,7 +267,7 @@ export default function HomePage() {
                   Engineered for the game, worn well beyond it.
                 </p>
                 <span className="section__cta" aria-disabled="true">
-                  Shop now
+                  Explore the Stone Island collection
                 </span>
               </div>
             </section>

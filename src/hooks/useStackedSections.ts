@@ -6,8 +6,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, CustomEase);
 
-// Soft settle — cubic-bezier(0.16, 1, 0.3, 1). Same family as the nav cube.
-CustomEase.create("stackSnap", "M0,0 C0.16,1 0.3,1 1,1");
+// Soft settle — cubic-bezier(0.25, 1, 0.36, 1). Less launch than 0.16/1.
+CustomEase.create("stackSnap", "M0,0 C0.25,1 0.36,1 1,1");
 
 type Options = {
   containerRef: React.RefObject<HTMLElement | null>;
@@ -35,8 +35,8 @@ const SWIPE_VELOCITY_PX_MS = 0.4;
  * Post-release settle. Touch is longer so the cover glides instead of snapping.
  * Remaining-distance scales the actual tween (almost-there stays short).
  */
-const SNAP_DURATION = 1.05;
-const SNAP_DURATION_TOUCH = 1.12;
+const SNAP_DURATION = 1.22;
+const SNAP_DURATION_TOUCH = 1.36;
 /** Keep full travel after commit (no mid-transition jump). */
 const COMMIT_JUMP_RATIO = 0;
 /** Forward and reverse share the same ease-out settle. */
@@ -321,9 +321,9 @@ export function useStackedSections({
           : prefersTouch
             ? SNAP_DURATION_TOUCH *
               gsap.utils.clamp(
-                0.42,
+                0.52,
                 1,
-                0.4 + (0.6 * Math.abs(y - fromY)) / Math.max(1, viewH()),
+                0.45 + (0.55 * Math.abs(y - fromY)) / Math.max(1, viewH()),
               )
             : SNAP_DURATION;
       const targetIndex =

@@ -803,6 +803,11 @@ html:has(.page[data-state="ready"]) body {
     z-index: 3;
   }
 
+  .section--utility .section__cta {
+    white-space: nowrap;
+    width: max-content;
+  }
+
   /* Made / Stone / BTS — title+subtitle sit above the pinned CTA */
   .section__copy.section__copy--hero {
     position: absolute;
