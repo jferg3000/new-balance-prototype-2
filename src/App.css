@@ -21,6 +21,22 @@ html:has(.page[data-state="ready"]) body {
   overscroll-behavior: none;
 }
 
+/*
+ * Desktop board: keep the same scrollbar gutter on HP and PDP so the 440
+ * column does not jump sideways when switching routes. Phones stay overflow
+ * hidden (iOS chrome).
+ */
+@media (hover: hover) and (pointer: fine) {
+  html {
+    scrollbar-gutter: stable;
+  }
+
+  html:has(.page[data-state="ready"]),
+  html:has(.page[data-state="ready"]) body {
+    overflow: auto;
+  }
+}
+
 .page[data-state="ready"] {
   /* Stay black under the stack — white here flashed during intro handoff */
   background: #000;
@@ -31,26 +47,18 @@ html:has(.page[data-state="ready"]) body {
   max-height: 100svh;
   overflow-x: hidden;
   overflow-y: auto;
+  /* Overlay so the bar cannot shrink the stack vs PDP's 440 column. */
+  overflow-y: overlay;
   overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/*
- * Desktop letterbox: hide `.page` scrollbar UI (scroll still works).
- * Scoped with hover/fine pointer (not min-width) so real phones keep
- * default scrollbar behavior.
- */
-@media (hover: hover) and (pointer: fine) {
-  .page[data-state="ready"] {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .page[data-state="ready"]::-webkit-scrollbar {
-    display: none;
-    width: 0;
-    height: 0;
-  }
+.page[data-state="ready"]::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .page[data-state="intro"] {
@@ -307,8 +315,8 @@ html:has(.page[data-state="ready"]) body {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   height: var(--nav-height);
-  /* Match Footer 08/13 16px insets */
-  padding: 0 16px;
+  /* motion-study-1 Nav 08/13 — 20px insets */
+  padding: 0 20px;
   background: transparent;
 }
 
@@ -318,6 +326,9 @@ html:has(.page[data-state="ready"]) body {
   height: 8px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  overflow: visible;
+  padding: 0;
   color: inherit;
 }
 
@@ -349,16 +360,18 @@ html:has(.page[data-state="ready"]) body {
   justify-self: end;
   display: flex;
   align-items: center;
-  /* Figma: search x=310, bag x=350 → 20px gap between 20×20 targets */
-  gap: 20px;
+  /* motion-study-1 Nav 08/13 — search↔bag 25px */
+  gap: 25px;
 }
 
 .nav__actions button {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: visible;
+  padding: 0;
   color: inherit;
 }
 

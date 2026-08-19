@@ -1,6 +1,6 @@
 /**
- * Main-nav glyphs. Menu uses the dropped motion-study-3 asset
- * `public/assets/Menu Black.svg` at native 22×8.
+ * Main-nav glyphs from new-balance-prototype-1 motion-study-1 `Global/`.
+ * Menu 22×8 staggered (same glyph black/white) · search/bag 16×16 · logo 44×21.
  */
 
 export type NavIconTone = "black" | "white";

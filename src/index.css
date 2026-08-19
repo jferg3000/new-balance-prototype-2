@@ -237,7 +237,9 @@ html:has(.page) .nb-shell {
   right: auto;
   width: 100%;
   max-width: var(--nb-frame-max);
-  margin-left: calc(-0.5 * min(100vw, var(--nb-frame-max)));
+  /* Use 100% (layout viewport), not 100vw — vw includes the scrollbar and
+     shifts this column left of the in-flow `.nb-shell`. */
+  margin-left: calc(-0.5 * min(100%, var(--nb-frame-max)));
 }
 
 img {
