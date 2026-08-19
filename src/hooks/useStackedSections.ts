@@ -6,11 +6,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, CustomEase);
 
-// Matches cubic-bezier(0.22, 1, 0.36, 1) — ease-out settle, no overshoot.
-CustomEase.create("stackSnap", "M0,0 C0.22,1 0.36,1 1,1");
-// Time-mirror for reverse: cubic-bezier(0.64, 0, 0.78, 0). The timeline puts
-// dwell before the forward cover, so reverse must ease-in or the undo rushes.
-CustomEase.create("stackSnapReverse", "M0,0 C0.64,0 0.78,0 1,1");
+// Soft settle — cubic-bezier(0.16, 1, 0.3, 1). Same family as the nav cube.
+CustomEase.create("stackSnap", "M0,0 C0.16,1 0.3,1 1,1");
+// Time-mirror for reverse: cubic-bezier(0.7, 0, 0.84, 0).
+CustomEase.create("stackSnapReverse", "M0,0 C0.7,0 0.84,0 1,1");
 
 type Options = {
   containerRef: React.RefObject<HTMLElement | null>;
@@ -28,24 +27,30 @@ const DWELL = 0.4;
 
 /** Treat as tap until movement exceeds this (px). */
 const TAP_TOLERANCE_PX = 10;
-/** Commit to next/prev card once vertical travel exceeds this (px). */
-const SWIPE_INTENT_PX = 20;
+/** Start 1:1 card follow after this travel (px). */
+const SWIPE_FOLLOW_PX = 10;
+/** Release past this fraction of the viewport → commit to the next card. */
+const SWIPE_COMMIT_RATIO = 0.35;
 /** Quick flick threshold (px / ms). */
 const SWIPE_VELOCITY_PX_MS = 0.4;
 /**
- * Post-commit visual settle — long enough to read depth (scale + cover).
- * Gesture threshold stays separate; a short swipe still commits, then this plays.
- * Touch forward + reverse share SNAP_DURATION_TOUCH (same duration, ease, path).
- * Desktop ScrollTrigger snap keeps SNAP_DURATION.
+ * Post-release settle. Touch is longer so the cover glides instead of snapping.
+ * Remaining-distance scales the actual tween (almost-there stays short).
  */
-const SNAP_DURATION = 0.72;
-const SNAP_DURATION_TOUCH = 0.8;
+const SNAP_DURATION = 1.05;
+const SNAP_DURATION_TOUCH = 1.12;
 /** Keep full travel after commit (no mid-transition jump). */
 const COMMIT_JUMP_RATIO = 0;
-/** Forward: cubic-bezier(0.22, 1, 0.36, 1). Reverse uses stackSnapReverse. */
+/** Forward: cubic-bezier(0.16, 1, 0.3, 1). Reverse uses stackSnapReverse. */
 const SNAP_EASE = "stackSnap";
 const SNAP_EASE_REVERSE = "stackSnapReverse";
 const SNAP_DURATION_REDUCED = 0.01;
+/**
+ * Under-card recede: zoom slightly inside the clipped stage so the frame
+ * stays full-bleed (scale-down would letterbox against the black stage).
+ */
+const UNDER_SCALE = 1.06;
+const UNDER_ALPHA = 0.82;
 
 const STACK_GESTURE_IGNORE =
   'a, button, input, select, textarea, [role="button"], [data-no-stack-gesture]';
@@ -72,6 +77,8 @@ type StackSwipeGesture = {
   startScrollY: number;
   startIndex: number;
   committed: boolean;
+  /** Scroll Y that maps to finger dy = 0 after skipping the hold. */
+  followOriginY?: number;
 };
 
 function prefersReducedMotion() {
@@ -103,7 +110,7 @@ function readNavColor(panels: HTMLElement[]): "white" | "black" {
  * hold → slide next up + scale previous → hold → …
  *
  * Desktop: scrubbed ScrollTrigger + snap to settled cards.
- * Touch: Path A only — commitSwipe → snapToScrollY (800ms). Native scroll must
+ * Touch: finger follows 1:1, then a long settle on release. Native scroll must
  * not scrub the card stack; Safari chrome may stay expanded on Homepage.
  *
  * Policy: Safari URL bar + toolbar stay EXPOSED for the session. Scroll runs on
@@ -284,8 +291,18 @@ export function useStackedSections({
       const jumpRatio = options?.jumpRatio ?? 0;
       const duration = prefersReducedMotion()
         ? SNAP_DURATION_REDUCED
-        : (options?.duration ??
-          (prefersTouch ? SNAP_DURATION_TOUCH : SNAP_DURATION));
+        : options?.duration !== undefined
+          ? options.duration
+          : prefersTouch
+            ? SNAP_DURATION_TOUCH *
+              gsap.utils.clamp(
+                0.42,
+                1,
+                0.4 +
+                  (0.6 * Math.abs(y - fromY)) /
+                    Math.max(1, (1 + DWELL) * viewH()),
+              )
+            : SNAP_DURATION;
       const targetIndex =
         options?.targetIndex !== undefined ? options.targetIndex : null;
       const ease = options?.ease ?? SNAP_EASE;
@@ -395,7 +412,8 @@ export function useStackedSections({
           current,
           { scale: 1, autoAlpha: 1 },
           {
-            scale: 0.9,
+            scale: UNDER_SCALE,
+            autoAlpha: UNDER_ALPHA,
             duration: 1,
             transformOrigin: "center center",
             immediateRender: false,
@@ -482,15 +500,18 @@ export function useStackedSections({
         return;
       }
       // Touch stack press: native scroll must not scrub cards (Path B block).
+      // During an uncommitted drag the finger owns scroll — do not freeze.
+      if (prefersTouch && swipe && !swipe.committed) {
+        syncNavColor();
+        syncFooterZone();
+        return;
+      }
       if (
         prefersTouch &&
-        (stackTouchActive || swipe || interactiveGuard) &&
+        (stackTouchActive || interactiveGuard) &&
         !swipe?.committed
       ) {
-        const y =
-          swipe?.startScrollY ??
-          interactiveGuard?.scrollY ??
-          pinY;
+        const y = interactiveGuard?.scrollY ?? pinY;
         freezeAt(y);
         syncNavColor();
         syncFooterZone();
@@ -525,7 +546,7 @@ export function useStackedSections({
       }, 120);
     }
 
-    /* —— Touch: decisive one-card swipe (Path A) —— */
+    /* —— Touch: 1:1 follow, then a long settle (Path A) —— */
 
     const clearSwipe = () => {
       swipe = null;
@@ -541,12 +562,44 @@ export function useStackedSections({
       return indexFromScroll(scrollY);
     };
 
+    const followRange = (gesture: StackSwipeGesture) => {
+      const fromIndex = Math.max(0, Math.min(lastCardIndex(), gesture.startIndex));
+      const last = lastCardIndex();
+      const minY = fromIndex <= 0 ? cardScrollY(0) : cardScrollY(fromIndex - 1);
+      const maxY =
+        fromIndex >= last ? footerScrollY() : cardScrollY(fromIndex + 1);
+      return { minY, maxY };
+    };
+
+    const applySwipeFollow = (gesture: StackSwipeGesture, clientY: number) => {
+      if (snapping) killSnap();
+      const dy = clientY - gesture.startY;
+      const fromIndex = Math.max(0, Math.min(lastCardIndex(), gesture.startIndex));
+      const fromY = cardScrollY(fromIndex);
+      const { minY, maxY } = followRange(gesture);
+      // Forward cover sits after a hold. Skip that hold so the next card
+      // tracks the finger 1:1 instead of waiting through empty scroll.
+      if (gesture.followOriginY === undefined) {
+        gesture.followOriginY =
+          dy < 0 ? Math.min(maxY, fromY + DWELL * viewH()) : fromY;
+      }
+      const y = Math.max(
+        minY,
+        Math.min(maxY, gesture.followOriginY - dy),
+      );
+      if (Math.abs(getScrollY() - y) > 0.25) {
+        setScrollY(y);
+        ScrollTrigger.update();
+      }
+      syncNavColor();
+      syncFooterZone();
+    };
+
     const commitSwipe = (gesture: StackSwipeGesture, direction: 1 | -1) => {
       if (gesture.committed) return;
       if (!prefersTouch || !gesturesReady) return;
 
       const last = lastCardIndex();
-      const wasSnapping = snapping;
 
       // Allow interrupting an in-flight settle once swipe intent is clear.
       if (snapping) {
@@ -557,15 +610,23 @@ export function useStackedSections({
 
       const fromIndex = Math.max(0, Math.min(last, gesture.startIndex));
       const next = Math.max(0, Math.min(last, fromIndex + direction));
-      // Settled swipes use full card anchors so reverse plays the whole
-      // cover-undo segment. Mid-flight interrupts keep live scroll.
-      const fromY = wasSnapping ? getScrollY() : cardScrollY(fromIndex);
-      freezeAt(fromY);
+      // Continue from the live follow position — never jump back to the card start.
+      let fromY = getScrollY();
+      if (direction > 0) {
+        const coverStart = Math.min(
+          cardScrollY(fromIndex) + DWELL * viewH(),
+          fromIndex >= last ? footerScrollY() : cardScrollY(fromIndex + 1),
+        );
+        if (fromY < coverStart - 0.5) {
+          fromY = coverStart;
+          setScrollY(fromY);
+          ScrollTrigger.update();
+        }
+      }
 
       const finish = {
         fromY,
         jumpRatio: COMMIT_JUMP_RATIO,
-        duration: SNAP_DURATION_TOUCH,
         // Forward ease-out; reverse ease-in (mirrored) so cover-undo isn't rushed.
         ease: direction < 0 ? SNAP_EASE_REVERSE : SNAP_EASE,
       };
@@ -594,9 +655,8 @@ export function useStackedSections({
       const dy = clientY - guard.startY;
       const ady = Math.abs(dy);
       const adx = Math.abs(clientX - guard.startX);
-      if (ady < SWIPE_INTENT_PX || ady < adx) return false;
+      if (ady < SWIPE_FOLLOW_PX || ady < adx) return false;
 
-      const direction: 1 | -1 = dy < 0 ? 1 : -1;
       const gesture: StackSwipeGesture = {
         pointerId: guard.pointerId,
         startX: guard.startX,
@@ -609,7 +669,7 @@ export function useStackedSections({
       clearInteractiveGuard();
       swipe = gesture;
       suppressClickUntil = performance.now() + 600;
-      commitSwipe(gesture, direction);
+      applySwipeFollow(gesture, clientY);
       return true;
     };
 
@@ -723,14 +783,12 @@ export function useStackedSections({
       const ady = Math.abs(dy);
       const adx = Math.abs(event.clientX - swipe.startX);
 
-      // Before intent: hold scroll so the next card never peeks.
-      if (ady < SWIPE_INTENT_PX || ady < adx) {
+      if (ady < SWIPE_FOLLOW_PX || ady < adx) {
         if (!snapping) freezeAt(swipe.startScrollY);
         return;
       }
 
-      const direction: 1 | -1 = dy < 0 ? 1 : -1;
-      commitSwipe(swipe, direction);
+      applySwipeFollow(swipe, event.clientY);
     };
 
     const onPointerEnd = (event: PointerEvent) => {
@@ -744,7 +802,7 @@ export function useStackedSections({
         const velocity = (guard.startY - event.clientY) / elapsed;
         const ady = Math.abs(dy);
         const pastTap = ady > TAP_TOLERANCE_PX;
-        const distanceCommit = ady >= SWIPE_INTENT_PX;
+        const distanceCommit = ady >= viewH() * SWIPE_COMMIT_RATIO;
         const velocityCommit = Math.abs(velocity) >= SWIPE_VELOCITY_PX_MS;
 
         if (
@@ -766,6 +824,7 @@ export function useStackedSections({
           clearInteractiveGuard();
           swipe = gesture;
           suppressClickUntil = performance.now() + 600;
+          applySwipeFollow(gesture, event.clientY);
           commitSwipe(gesture, direction);
           clearSwipe();
           stackTouchActive = false;
@@ -789,7 +848,7 @@ export function useStackedSections({
         const velocity = (swipe.startY - event.clientY) / elapsed; // up = positive
         const ady = Math.abs(dy);
 
-        const distanceCommit = ady >= SWIPE_INTENT_PX;
+        const distanceCommit = ady >= viewH() * SWIPE_COMMIT_RATIO;
         const velocityCommit = Math.abs(velocity) >= SWIPE_VELOCITY_PX_MS;
         const pastTap = ady > TAP_TOLERANCE_PX;
 
@@ -797,13 +856,17 @@ export function useStackedSections({
           const direction: 1 | -1 = dy < 0 || velocity > 0 ? 1 : -1;
           commitSwipe(swipe, direction);
         } else {
-          // Cancel — settle exactly on the card we started on (same touch settle).
-          freezeAt(swipe.startScrollY);
+          // Cancel — glide back onto the card we started on.
           if (Math.abs(getScrollY() - cardScrollY(swipe.startIndex)) > 1) {
             snapToCardIndex(swipe.startIndex, {
               fromY: getScrollY(),
-              duration: SNAP_DURATION_TOUCH,
+              ease:
+                getScrollY() > cardScrollY(swipe.startIndex)
+                  ? SNAP_EASE_REVERSE
+                  : SNAP_EASE,
             });
+          } else {
+            freezeAt(swipe.startScrollY);
           }
         }
       }
@@ -834,7 +897,10 @@ export function useStackedSections({
         return;
       }
 
-      if (swipe?.committed || snapping) {
+      if (swipe?.committed) {
+        return;
+      }
+      if (snapping && !swipe) {
         return;
       }
 
@@ -867,13 +933,12 @@ export function useStackedSections({
       const ady = Math.abs(dy);
       const adx = Math.abs(touch.clientX - swipe.startX);
 
-      if (ady < SWIPE_INTENT_PX || ady < adx) {
+      if (ady < SWIPE_FOLLOW_PX || ady < adx) {
         freezeAt(swipe.startScrollY);
         return;
       }
 
-      const direction: 1 | -1 = dy < 0 ? 1 : -1;
-      commitSwipe(swipe, direction);
+      applySwipeFollow(swipe, touch.clientY);
     };
 
     root.addEventListener("pointerdown", onPointerDown, { capture: true });
