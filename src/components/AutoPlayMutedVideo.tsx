@@ -38,34 +38,66 @@ export function AutoPlayMutedVideo({ src, className }: Props) {
 
     unlockMuted();
     video.load();
-    tryPlay();
 
-    const onReady = () => tryPlay();
+    const stackedCard = video.closest<HTMLElement>("[data-stacked-card]");
+    const card =
+      stackedCard ??
+      video.parentElement ??
+      video;
+
+    const tryPlayIfLive = () => {
+      if (stackedCard && stackedCard.getAttribute("data-stack-live") !== "true") {
+        return;
+      }
+      tryPlay();
+    };
+
+    if (!stackedCard) {
+      tryPlay();
+    }
+
+    const onReady = () => tryPlayIfLive();
     video.addEventListener("loadeddata", onReady);
     video.addEventListener("canplay", onReady);
     video.addEventListener("canplaythrough", onReady);
-
-    const card =
-      video.closest<HTMLElement>("[data-stacked-card]") ??
-      video.parentElement ??
-      video;
 
     const observer = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
         if (!entry) return;
         if (entry.isIntersecting && entry.intersectionRatio >= 0.2) {
-          tryPlay();
+          tryPlayIfLive();
         }
       },
       { threshold: [0, 0.2, 0.5, 0.8] },
     );
-    observer.observe(card);
+    if (!stackedCard) {
+      observer.observe(card);
+    }
+
+    const syncStackLive = () => {
+      if (!stackedCard) return;
+      if (stackedCard.getAttribute("data-stack-live") === "true") {
+        tryPlay();
+      } else {
+        video.pause();
+      }
+    };
+    const stackAttrObserver = stackedCard
+      ? new MutationObserver(syncStackLive)
+      : null;
+    if (stackedCard && stackAttrObserver) {
+      stackAttrObserver.observe(stackedCard, {
+        attributes: true,
+        attributeFilter: ["data-stack-live"],
+      });
+      syncStackLive();
+    }
 
     // Stack swipe counts as a user gesture — unlock autoplay if needed.
-    const onGesture = () => tryPlay();
+    const onGesture = () => tryPlayIfLive();
     const onVisible = () => {
-      if (document.visibilityState === "visible") tryPlay();
+      if (document.visibilityState === "visible") tryPlayIfLive();
     };
     window.addEventListener("touchstart", onGesture, {
       capture: true,
@@ -79,6 +111,7 @@ export function AutoPlayMutedVideo({ src, className }: Props) {
 
     return () => {
       observer.disconnect();
+      stackAttrObserver?.disconnect();
       video.removeEventListener("loadeddata", onReady);
       video.removeEventListener("canplay", onReady);
       video.removeEventListener("canplaythrough", onReady);

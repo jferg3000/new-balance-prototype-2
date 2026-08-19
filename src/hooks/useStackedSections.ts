@@ -226,6 +226,31 @@ export function useStackedSections({
       return best;
     };
 
+    /**
+     * Keep at most the current card, the incoming card, and a reverse neighbor
+     * on the compositor. Idle cards drop force3D + visibility so Safari isn't
+     * painting five full-screen layers (and a video decoder) every frame.
+     */
+    const syncCompositorLayers = () => {
+      const y = getScrollY();
+      const current = inFooterZone(y) ? lastCardIndex() : indexFromScroll(y);
+      const reversing = y < cardScrollY(current) - 1;
+      panels.forEach((panel, idx) => {
+        const opacity = Number(gsap.getProperty(panel, "opacity"));
+        const yPercent = Number(gsap.getProperty(panel, "yPercent"));
+        const showing = opacity > 0.02 && yPercent < 99.85;
+        const live =
+          showing || idx === current + 1 || (reversing && idx === current - 1);
+        const next = live ? "true" : "false";
+        if (panel.dataset.stackLive === next) return;
+        panel.dataset.stackLive = next;
+        gsap.set(panel, {
+          visibility: live ? "visible" : "hidden",
+          force3D: live,
+        });
+      });
+    };
+
     let snapTween: gsap.core.Tween | null = null;
     let snapping = false;
     /** While set, reject any scroll that isn't owned by the snap tween. */
@@ -257,6 +282,7 @@ export function useStackedSections({
       ScrollTrigger.update();
       syncNavColor();
       syncFooterZone();
+      syncCompositorLayers();
       return true;
     };
 
@@ -336,6 +362,7 @@ export function useStackedSections({
           snapLockY = getScrollY();
           syncNavColor();
           syncFooterZone();
+          syncCompositorLayers();
         },
         onComplete: () => {
           unlockSnap();
@@ -343,6 +370,7 @@ export function useStackedSections({
           ScrollTrigger.update();
           syncNavColor();
           syncFooterZone();
+          syncCompositorLayers();
           // Clear leftover gesture state so the next touch starts clean.
           swipe = null;
           interactiveGuard = null;
@@ -376,10 +404,10 @@ export function useStackedSections({
           y: 0,
           yPercent: i === 0 ? 0 : 100,
           scale: 1,
-          autoAlpha: 1,
-          visibility: "visible",
+          opacity: 1,
+          visibility: i <= 1 ? "visible" : "hidden",
           transformOrigin: "center center",
-          force3D: true,
+          force3D: i <= 1,
         });
       });
 
@@ -397,6 +425,7 @@ export function useStackedSections({
           onUpdate: () => {
             syncNavColor();
             syncFooterZone();
+            syncCompositorLayers();
           },
         },
       });
@@ -411,10 +440,10 @@ export function useStackedSections({
 
         tl.fromTo(
           current,
-          { scale: 1, autoAlpha: 1 },
+          { scale: 1, opacity: 1 },
           {
             scale: UNDER_SCALE,
-            autoAlpha: UNDER_ALPHA,
+            opacity: UNDER_ALPHA,
             duration: 1,
             transformOrigin: "center center",
             immediateRender: false,
@@ -434,7 +463,7 @@ export function useStackedSections({
         );
 
         t += 1;
-        tl.set(current, { autoAlpha: 0 }, t);
+        tl.set(current, { opacity: 0 }, t);
       }
 
       // Desktop / fine pointer: ScrollTrigger snap to settled cards.
@@ -463,6 +492,7 @@ export function useStackedSections({
 
       syncNavColor();
       syncFooterZone();
+      syncCompositorLayers();
       ScrollTrigger.refresh();
       applyFocusCard();
       window.requestAnimationFrame(() => {
@@ -489,6 +519,7 @@ export function useStackedSections({
       pinY = getScrollY();
       gesturesReady = true;
       syncNavColor();
+      syncCompositorLayers();
     };
 
     const onScroll = () => {
@@ -520,6 +551,7 @@ export function useStackedSections({
       }
       onNavColorChange?.(readNavColor(panels));
       syncFooterZone();
+      syncCompositorLayers();
     };
     const onResize = () => {
       wrap.style.setProperty("--stack-view-h", `${viewH()}px`);
@@ -594,6 +626,7 @@ export function useStackedSections({
       }
       syncNavColor();
       syncFooterZone();
+      syncCompositorLayers();
     };
 
     const commitSwipe = (gesture: StackSwipeGesture, direction: 1 | -1) => {
@@ -962,6 +995,7 @@ export function useStackedSections({
     });
 
     syncFooterZone();
+    syncCompositorLayers();
 
     return () => {
       window.clearTimeout(t1);
@@ -979,6 +1013,9 @@ export function useStackedSections({
       clearSwipe();
       clearInteractiveGuard();
       stackTouchActive = false;
+      panels.forEach((panel) => {
+        delete panel.dataset.stackLive;
+      });
       wrap.style.removeProperty("--stack-scroll-units");
       onFooterZoneChangeRef.current?.(false);
       ctx.revert();
