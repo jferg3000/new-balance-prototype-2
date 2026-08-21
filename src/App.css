@@ -613,16 +613,16 @@ html:has(.page[data-state="ready"]) body {
 }
 
 /*
- * 9060 CTA label — Figma subtitle top 750 → CTA text top 805: the 35px gap is
- * split into 10px margin + 25px padding so the label sits in the same place
- * while the row stays 70px tall inside the shared hit Link.
+ * 9060 CTA label — subtitle→CTA gap matches the shared 25px stack.
+ * Split into 10px margin + 15px padding so the label sits in the same place
+ * while the row stays tall enough inside the shared hit Link.
  */
 .section__copy--product .section__cta {
   margin-top: 10px;
   display: block;
   width: 100%;
-  min-height: 70px;
-  padding: 25px 0;
+  min-height: 60px;
+  padding: 15px 0;
   box-sizing: border-box;
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -687,7 +687,7 @@ html:has(.page[data-state="ready"]) body {
 }
 
 .section__copy--editorial .section__cta {
-  margin-top: 35px;
+  margin-top: 25px;
 }
 
 .section__title {
@@ -720,7 +720,7 @@ html:has(.page[data-state="ready"]) body {
 
 .section__ctas,
 .section__cta {
-  margin-top: 35px;
+  margin-top: 25px;
 }
 
 .section__ctas {
@@ -730,7 +730,7 @@ html:has(.page[data-state="ready"]) body {
   align-items: flex-end;
 }
 
-/* Hero wraps the CTA in .section__ctas — don't stack both 35px margins. */
+/* Hero wraps the CTA in .section__ctas — don't stack both 25px margins. */
 .section__ctas .section__cta {
   margin-top: 0;
 }
@@ -780,9 +780,9 @@ html:has(.page[data-state="ready"]) body {
       5.5vh,
       calc(env(safe-area-inset-bottom, 0px) + 32px)
     );
-    /* Made in USA: 20px CTA line-height + 35px subtitle→CTA gap */
+    /* Made in USA: 20px CTA line-height + 25px subtitle→CTA gap */
     --hp-cta-line: 20px;
-    --hp-subtitle-cta-gap: 35px;
+    --hp-subtitle-cta-gap: 25px;
   }
 
   /*
