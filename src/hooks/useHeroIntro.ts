@@ -44,7 +44,7 @@ export const HERO_IMAGE = "/assets/hero.jpg";
 export const PEEP_CARDS = [
   { id: "hero", image: "/assets/hero.jpg", zIndex: 2 },
   // Matches Intro Stack peep + homepage section beneath Made
-  { id: "sezane", image: "/assets/sezane.jpg", zIndex: 1 },
+  { id: "sezane", image: "/assets/Sezanne-NEW.jpg", zIndex: 1 },
 ] as const;
 
 function prefersReducedMotion() {

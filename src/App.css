@@ -508,15 +508,15 @@ html:has(.page[data-state="ready"]) body {
   background: rgba(0, 0, 0, 0.1);
 }
 
-/* Figma 146:424 — inset photo; bottom clears title + subtitle + CTA */
+/* Inset photo — sit below promo + nav, clear the title stack. */
 .section__media--inset {
   position: absolute;
   left: 16px;
   right: 16px;
-  top: calc(56 / 874 * 100%);
-  height: calc(610 / 874 * 100%);
+  top: calc(var(--promo-bar-height) + var(--nav-height) + 16px);
+  height: auto;
+  bottom: calc(max(48px, 5.5vh) + 131px);
   width: auto;
-  max-width: none;
   margin: 0;
   overflow: hidden;
 }
@@ -854,10 +854,12 @@ html:has(.page[data-state="ready"]) body {
   }
 
   /*
-   * Sezane — title in the same bottom stack as the other cards.
-   * Photo sits under chrome and clears title + subtitle + CTA.
+   * Sezane — photo under chrome, bottom clears title + subtitle + CTA.
    */
   .section--editorial .section__media--inset {
+    left: 16px;
+    right: 16px;
+    transform: none;
     top: calc(var(--promo-bar-height) + var(--nav-height) + 16px);
     height: auto;
     bottom: calc(
@@ -1013,13 +1015,13 @@ html:has(.page[data-state="ready"]) body {
   }
 }
 
-/* Real phones only — Sézane: photo up under chrome; keep her head in frame. */
+/* Real phones only — Sézane: keep her head in frame. */
 @media (pointer: coarse) {
   .section--editorial .section__media--inset img {
     height: 100%;
     transform: none;
     object-fit: cover;
-    object-position: center 12%;
+    object-position: center center;
   }
 
   /*

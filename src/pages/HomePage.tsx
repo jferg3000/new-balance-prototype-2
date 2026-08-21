@@ -20,7 +20,7 @@ export type HomeEntryState = {
 
 const assets = {
   hero: "/assets/hero.jpg",
-  sezane: "/assets/sezane.jpg",
+  sezane: "/assets/Sezanne-NEW.jpg",
   // Faststarted H.264 (moov before mdat) — required for iOS progressive autoplay.
   utility: "/assets/stone-island.mp4",
   product: "/assets/product.jpg",
