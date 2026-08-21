@@ -228,10 +228,8 @@ export default function HomePage() {
               data-stacked-card
               data-nav-color="black"
               data-node-id="147:649"
+              aria-label="Sezane x New Balance"
             >
-              <h2 className="section__title section__title--top">
-                Sezane x New Balance
-              </h2>
               <div className="section__media section__media--inset">
                 <img src={assets.sezane} alt="Sezane x New Balance" />
               </div>

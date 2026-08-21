@@ -508,13 +508,13 @@ html:has(.page[data-state="ready"]) body {
   background: rgba(0, 0, 0, 0.1);
 }
 
-/* Figma 146:424 — image 16×170, 370×560 within 402×874 */
+/* Figma 146:424 — inset photo; bottom clears subtitle + CTA */
 .section__media--inset {
   position: absolute;
   left: 16px;
   right: 16px;
-  top: calc(170 / 874 * 100%);
-  height: calc(560 / 874 * 100%);
+  top: calc(56 / 874 * 100%);
+  height: calc(660 / 874 * 100%);
   width: auto;
   max-width: none;
   margin: 0;
@@ -656,17 +656,17 @@ html:has(.page[data-state="ready"]) body {
   padding-bottom: 24px;
 }
 
-/* Figma 146:426 / 146:436 — subtitle y750, CTA y805 */
+/* Figma 146:426 / 146:436 — subtitle + CTA, same bottom stack as hero */
 /* Two classes so this wins over `.section__copy { position: relative }`. */
 .section__copy.section__copy--editorial {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(750 / 874 * 100%);
-  width: 100%;
-  max-width: none;
+  left: 50%;
+  bottom: max(48px, 5.5vh);
+  transform: translateX(-50%);
+  width: calc(100% - 64px);
+  max-width: 338px;
   margin: 0;
-  padding: 0 32px;
+  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -695,29 +695,8 @@ html:has(.page[data-state="ready"]) body {
   letter-spacing: 0.32px;
 }
 
-.section__title--hero {
-  font-size: 36px;
-  letter-spacing: 0.36px;
-}
-
 .section__title-u {
   letter-spacing: -1.08px;
-}
-
-/* Figma 146:427 — title y110, 36×40 */
-.section__title--top {
-  position: absolute;
-  left: 50%;
-  top: calc(110 / 874 * 100%);
-  transform: translateX(-50%);
-  margin: 0;
-  font-size: 36px;
-  line-height: 40px;
-  letter-spacing: 0.36px;
-  color: var(--color-black);
-  text-align: center;
-  width: calc(100% - 64px);
-  max-width: 338px;
 }
 
 .section__subtitle {
@@ -871,35 +850,44 @@ html:has(.page[data-state="ready"]) body {
   }
 
   /*
-   * Sezane — Figma 147:649 image/title; subtitle keeps its band; CTA pinned.
+   * Sezane — no title; photo sits under chrome and clears subtitle + CTA.
    */
-  .section--editorial .section__title--top {
-    top: calc(150 / 874 * 100%);
-    transform: translate(-50%, -100%);
-  }
-
   .section--editorial .section__media--inset {
-    top: calc(170 / 874 * 100%);
-    height: calc(560 / 874 * 100%);
+    top: calc(var(--promo-bar-height) + var(--nav-height) + 16px);
+    height: auto;
+    bottom: calc(
+      var(--hp-cta-bottom) + var(--hp-cta-line) + var(--hp-subtitle-cta-gap) + 28px
+    );
   }
 
   .section__copy.section__copy--editorial {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    max-width: none;
-    padding: 0 32px;
+    left: 50%;
+    right: auto;
+    width: calc(100% - 64px);
+    max-width: 338px;
+    height: auto;
+    max-height: none;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0;
+    padding-bottom: calc(
+      var(--hp-cta-bottom) + var(--hp-cta-line) + var(--hp-subtitle-cta-gap)
+    );
     margin: 0;
   }
 
   .section--editorial .section__copy--editorial .section__subtitle {
-    position: absolute;
-    left: 32px;
-    right: 32px;
-    top: calc(750 / 874 * 100%);
+    position: static;
+    left: auto;
+    right: auto;
+    top: auto;
     margin: 0;
   }
 
@@ -1020,37 +1008,13 @@ html:has(.page[data-state="ready"]) body {
   }
 }
 
-/* Real phones only — Sézane: clear the overlay chrome; don’t pull the photo up. */
+/* Real phones only — Sézane: photo up under chrome; keep her head in frame. */
 @media (pointer: coarse) {
-  .section--editorial .section__title--top {
-    top: calc(var(--promo-bar-height) + var(--nav-height) + 20px);
-    transform: translateX(-50%);
-  }
-
-  .section--editorial .section__media--inset {
-    top: calc(var(--promo-bar-height) + var(--nav-height) + 74px);
-    height: auto;
-    bottom: calc(
-      var(--hp-cta-bottom) + var(--hp-cta-line) + var(--hp-subtitle-cta-gap) + 28px
-    );
-  }
-
   .section--editorial .section__media--inset img {
     height: 100%;
     transform: none;
     object-fit: cover;
     object-position: center 12%;
-  }
-
-  /*
-   * Pin subtitle above the shared CTA band — same 35px gap as Made / Stone / BTS
-   * instead of the Figma 750/874 top band (too much air to the CTA on phones).
-   */
-  .section--editorial .section__copy--editorial .section__subtitle {
-    top: auto;
-    bottom: calc(
-      var(--hp-cta-bottom) + var(--hp-cta-line) + var(--hp-subtitle-cta-gap)
-    );
   }
 
   /*
