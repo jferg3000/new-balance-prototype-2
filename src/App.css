@@ -508,13 +508,13 @@ html:has(.page[data-state="ready"]) body {
   background: rgba(0, 0, 0, 0.1);
 }
 
-/* Figma 146:424 — inset photo; bottom clears subtitle + CTA */
+/* Figma 146:424 — inset photo; bottom clears title + subtitle + CTA */
 .section__media--inset {
   position: absolute;
   left: 16px;
   right: 16px;
   top: calc(56 / 874 * 100%);
-  height: calc(660 / 874 * 100%);
+  height: calc(610 / 874 * 100%);
   width: auto;
   max-width: none;
   margin: 0;
@@ -656,7 +656,7 @@ html:has(.page[data-state="ready"]) body {
   padding-bottom: 24px;
 }
 
-/* Figma 146:426 / 146:436 — subtitle + CTA, same bottom stack as hero */
+/* Figma 146:426 / 146:436 — title + subtitle + CTA, same bottom stack as hero */
 /* Two classes so this wins over `.section__copy { position: relative }`. */
 .section__copy.section__copy--editorial {
   position: absolute;
@@ -671,6 +671,10 @@ html:has(.page[data-state="ready"]) body {
   flex-direction: column;
   align-items: center;
   text-align: center;
+}
+
+.section__copy--editorial .section__title {
+  margin-bottom: 0;
 }
 
 .section__copy--editorial .section__subtitle {
@@ -850,13 +854,14 @@ html:has(.page[data-state="ready"]) body {
   }
 
   /*
-   * Sezane — no title; photo sits under chrome and clears subtitle + CTA.
+   * Sezane — title in the same bottom stack as the other cards.
+   * Photo sits under chrome and clears title + subtitle + CTA.
    */
   .section--editorial .section__media--inset {
     top: calc(var(--promo-bar-height) + var(--nav-height) + 16px);
     height: auto;
     bottom: calc(
-      var(--hp-cta-bottom) + var(--hp-cta-line) + var(--hp-subtitle-cta-gap) + 28px
+      var(--hp-cta-bottom) + var(--hp-cta-line) + var(--hp-subtitle-cta-gap) + 80px
     );
   }
 
